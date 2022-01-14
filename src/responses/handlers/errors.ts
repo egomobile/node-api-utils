@@ -52,6 +52,7 @@ export function handleApiError(): HttpErrorHandler {
                 internal: true,
                 message: `Unexpected server error: ${String(error)}`
             })
+            .withStatus(500)
             .send();
     };
 }
@@ -84,8 +85,9 @@ export function handleApiNotFound(): HttpNotFoundHandler {
                 code: 404,
                 type: 'error',
                 internal: true,
-                message: `[${request.method}] ${request.url} not found`
+                message: `[${request.method}] URL ${request.url} does not exist`
             })
+            .withStatus(404)
             .send();
     };
 }

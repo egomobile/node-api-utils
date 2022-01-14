@@ -12,7 +12,7 @@
         "lint": "eslint -c .eslintrc.js --ext .ts src",
         "lint:fix": "eslint --fix -c .eslintrc.js --ext .ts src",
         "sandbox": "nodemon --watch './sandbox.ts' --exec node -r ts-node/register --inspect=0.0.0.0:9229 ./sandbox.ts",
-        "test": "jest --no-cache --silent"
+        "test": "jest --no-cache"
     },
     "jest": {
         "preset": "ts-jest",
@@ -55,13 +55,14 @@
         "@egomobile/http-server": "^0.30.0",
         "@egomobile/tsconfig": "^5.0.0",
         "@types/jest": "27.0.3",
+        "@types/supertest": "^2.0.11",
         "babel-jest": "27.4.4",
         "del-cli": "4.0.1",
         "eslint": "7.32.0",
         "eslint-config-ego": "^0.15.0",
         "jest": "27.4.4",
         "nodemon": "2.0.15",
-        "supertest": "6.1.6",
+        "supertest": "^6.1.6",
         "ts-jest": "27.1.1",
         "ts-node": "10.4.0",
         "tslint": "6.1.3",
