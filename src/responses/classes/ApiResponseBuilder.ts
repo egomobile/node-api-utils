@@ -168,6 +168,7 @@ export class ApiResponseBuilder {
      * @param {IApiResponseBuilderOptions} options The options.
      */
     public constructor(options: IApiResponseBuilderOptions) {
+        this.request = options.request;
         this.response = options.response;
     }
 
@@ -225,6 +226,11 @@ export class ApiResponseBuilder {
 
         return this;
     }
+
+    /**
+     * The underlying request context.
+     */
+    public readonly request: IHttpRequest;
 
     /**
      * The underlying response context.
