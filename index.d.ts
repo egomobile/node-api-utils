@@ -1,5 +1,5 @@
 
-declare module '@egomobile/http-server' {
-    export interface IHttpRequest {
+declare module 'http' {
+    export interface IncomingMessage {
     }
 }

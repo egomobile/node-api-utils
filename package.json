@@ -12,7 +12,7 @@
         "lint": "eslint -c .eslintrc.js --ext .ts src",
         "lint:fix": "eslint --fix -c .eslintrc.js --ext .ts src",
         "sandbox": "nodemon --watch './sandbox.ts' --exec node -r ts-node/register --inspect=0.0.0.0:9229 ./sandbox.ts",
-        "test": "exit 0"
+        "test": "jest --no-cache --silent"
     },
     "jest": {
         "preset": "ts-jest",

@@ -1,5 +1,3 @@
-/* eslint-disable spaced-comment */
-
 // This file is part of the @egomobile/api-utils distribution.
 // Copyright (c) Next.e.GO Mobile SE, Aachen, Germany (https://e-go-mobile.com/)
 //
@@ -15,6 +13,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-/// <reference path="../index.d.ts" />
+import { ApiResponseBuilder } from '../..';
 
-export * from './responses';
+describe('ApiResponseBuilder.noSuccess', () => {
+    it('should save valid value to internal prop', async () => {
+        const response = new ApiResponseBuilder({ request: {} as any, response: {} as any })
+            .noSuccess();
+
+        // eslint-disable-next-line no-underscore-dangle
+        const value: any = (response as any)._success;
+
+        expect(typeof value).toBe('boolean');
+        expect(value).toBe(false);
+    });
+});
