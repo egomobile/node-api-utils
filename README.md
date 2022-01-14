@@ -72,6 +72,12 @@ app.setNotFoundHandler(handleApiNotFound());
 app.listen().catch(console.error);
 ```
 
+## Credits
+
+The module makes use of:
+
+- [joi](https://joi.dev/) by [Sideway Inc.](https://github.com/sideway)
+
 ## Documentation
 
 The API documentation can be found

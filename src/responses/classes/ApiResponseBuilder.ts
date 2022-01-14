@@ -17,7 +17,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import type { IHttpRequest, IHttpResponse } from '@egomobile/http-server';
-import { Nilable, Nullable } from '../types/internal';
+import { Nilable, Nullable } from '../../types/internal';
 
 /**
  * Format of response data.
