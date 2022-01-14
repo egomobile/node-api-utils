@@ -39,7 +39,7 @@ import { ApiResponseBuilder } from './classes/ApiResponseBuilder';
  *       internal: true,
  *       message: 'A new object with ID ' + newObject.id + ' has been created'
  *     })  // internal warning message
- *     .send()  // write all data to response
+ *     .send()  // write all data to client
  * })
  *
  * app.listen()
