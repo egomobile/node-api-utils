@@ -22,16 +22,26 @@ npm install --save @egomobile/api-utils
 #### Build API responses
 
 ```typescript
-import createServer, { params } from "@egomobile/http-server";
-import { apiResponse } from "@egomobile/api-utils";
+import createServer, { query, params } from "@egomobile/http-server";
+import { apiResponse, parseListQuery } from "@egomobile/api-utils";
 
 const app = createServer();
 
-app.get("/users", async (request, response) => {
+app.get("/users", [query(), parseListQuery()], async (request, response) => {
   // load all users into 'allUsers'
 
+  // use request.listQuery, created by middleware of parseListQuery(),
+  // to select items inside data source of 'allUsers'
+  // and save it to 'selectedUsers'
+
   apiResponse(request, response)
-    .withList(allUsers) // set list for 'data' prop
+    .withList({
+      limit: request.listQuery!.limit,
+      offset: request.listQuery!.offset,
+      totalCount: allUsers.length,
+
+      items: selectedUsers,
+    }) // set list for 'data' prop
     .send(); // write all data to client
 });
 
