@@ -169,8 +169,8 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
 
                     const sep = fieldWithSort.indexOf(',');
                     if (sep > -1) {
-                        fieldName = fieldWithSort.substr(0, sep);
-                        sortDir = fieldWithSort.substr(sep + 1);
+                        fieldName = fieldWithSort.substring(0, sep);
+                        sortDir = fieldWithSort.substring(sep + 1);
                     } else {
                         fieldName = fieldWithSort;
                         sortDir = 'asc';
