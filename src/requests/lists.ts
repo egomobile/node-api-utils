@@ -144,7 +144,7 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
                 )
             : getEmptyArray;
 
-    // we do not these things anymore => cleanup memory
+    // we do not need these things anymore => cleanup memory
     options = null;
     optionsOrValidFieldNames = null;
 
