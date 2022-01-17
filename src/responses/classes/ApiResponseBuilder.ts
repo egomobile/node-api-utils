@@ -17,7 +17,8 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import type { IHttpRequest, IHttpResponse } from '@egomobile/http-server';
-import { Nilable, Nullable } from '../../types/internal';
+import { List, Nilable, Nullable } from '../../types/internal';
+import { isIterable, isNil } from '../../utils/internal';
 
 /**
  * Format of response data.
@@ -130,7 +131,7 @@ export interface IWithApiResponseListOptions<T extends any = any> {
     /**
      * The list of items.
      */
-    items: T[] | Iterable<T> | IterableIterator<T>;
+    items: List<T>;
     /**
      * The total number of possible items.
      */
@@ -276,14 +277,25 @@ export class ApiResponseBuilder {
      *
      * @returns {this} That instance.
      */
-    public withList(options: IWithApiResponseListOptions): this {
+    public withList(items: List): this;
+    public withList(options: IWithApiResponseListOptions): this;
+    public withList(optionsOrItems: IWithApiResponseListOptions | List): this {
+        let options: IWithApiResponseListOptions;
+        if (isIterable(optionsOrItems)) {
+            options = {
+                items: optionsOrItems as List
+            };
+        } else {
+            options = optionsOrItems as IWithApiResponseListOptions;
+        }
+
         const items = Array.isArray(options.items) ?
             options.items : [...options.items];
 
         this._data = {
-            offset: options.offset || 0,
-            totalCount: options.totalCount || items.length,
-            limit: options.limit || items.length,
+            offset: isNil(options.offset) ? 0 : options.offset,
+            totalCount: isNil(options.totalCount) ? items.length : options.totalCount,
+            limit: isNil(options.limit) ? items.length : options.limit,
             items
         } as any;
 
