@@ -140,7 +140,7 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
         validFieldNamesPredicates?.length ?
             (sort) => Object.keys(sort)
                 .filter(
-                    (fieldName) => !validFieldNamesPredicates!.every(predicate => predicate(fieldName))
+                    (fieldName) => validFieldNamesPredicates!.some(predicate => !predicate(fieldName))
                 )
             : getEmptyArray;
 
