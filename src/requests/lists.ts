@@ -75,7 +75,7 @@ export type ValidFieldNameItemValue = string | RegExp | ValidFieldNamePredicate;
  */
 export type ValidFieldNamePredicate = (fieldName: string) => boolean;
 
-const queryParamsSchema = joi.object({
+const listQueryParamsSchema = joi.object({
     limit: joi.number().strict().min(0).required(),
     offset: joi.number().strict().min(0).required(),
     sort: joi.object()
@@ -180,7 +180,7 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
                 });
         }
 
-        const validationResult = queryParamsSchema.validate(listQuery);
+        const validationResult = listQueryParamsSchema.validate(listQuery);
         if (!validationResult.error) {
             const invalidFieldNames = getInvalidFieldNames(listQuery.sort);
             if (!invalidFieldNames.length) {
