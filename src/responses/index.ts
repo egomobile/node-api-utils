@@ -59,3 +59,5 @@ export function apiResponse(request: IHttpRequest, response: IHttpResponse): Api
 }
 
 export * from './classes';
+export * from './handlers';
+
