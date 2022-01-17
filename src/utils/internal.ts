@@ -1,5 +1,3 @@
-/* eslint-disable spaced-comment */
-
 // This file is part of the @egomobile/api-utils distribution.
 // Copyright (c) Next.e.GO Mobile SE, Aachen, Germany (https://e-go-mobile.com/)
 //
@@ -15,8 +13,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-/// <reference path="../index.d.ts" />
+export function getEmptyArray<T extends any = any>(): T[] {
+    return [];
+}
 
-export * from './requests';
-export * from './responses';
+export function isNil(val: any): val is (null | undefined) {
+    return typeof val === 'undefined' || val === null;
+}
 
+export function isIterable(val: any) {
+    return typeof val?.[Symbol.iterator] === 'function';
+}
