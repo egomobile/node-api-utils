@@ -65,7 +65,7 @@ const invalidParams = [
     }
 ];
 
-describe('parseListQuery', () => {
+describe('parseListQuery()', () => {
     it.each(validParams)('should return 200, if submit valid query params', async (params) => {
         const q = Object.entries(params)
             .map(e => String(e[0]) + '=' + String(encodeURIComponent(e[1])))

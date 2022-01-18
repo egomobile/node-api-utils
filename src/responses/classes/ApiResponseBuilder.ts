@@ -23,7 +23,7 @@ import { isIterable, isNil } from '../../utils/internal';
 /**
  * Format of response data.
  */
-export type ApiResponseData = Record<string, object>;
+export type ApiResponseData = Record<string, any>;
 
 /**
  * Type of a API response message.

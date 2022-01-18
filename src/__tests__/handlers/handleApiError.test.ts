@@ -18,7 +18,7 @@ import request from 'supertest';
 import { handleApiError } from '../../responses/handlers';
 import { binaryParser } from '../utils';
 
-describe('ApiResponseBuilder.noSuccess', () => {
+describe('handleApiError()', () => {
     it.each(['foo', 'bar', 'baz'])('should save valid value to internal prop', async (txt) => {
         const expectedResponse: any = {
             success: false,

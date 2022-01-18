@@ -7,5 +7,13 @@ declare module 'http' {
          * 'parseListQuery()' function.
          */
         listQuery?: IApiListQuery;
+        /**
+         * Unique request ID.
+         */
+        requestId?: string;
+        /**
+         * Request time.
+         */
+        requestTime?: Date;
     }
 }
