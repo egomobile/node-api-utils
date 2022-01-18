@@ -15,47 +15,32 @@
 
 import createServer from '@egomobile/http-server';
 import request from 'supertest';
-import { handleApiNotFound } from '../../responses/handlers';
+import { extendRequest } from '../..';
 import { binaryParser } from '../utils';
 
-describe('handleApiNotFound()', () => {
-    it.each(['foo', 'bar', 'baz'])('should save valid value to internal prop', async (subPath) => {
-        const expectedResponse: any = {
-            success: false,
-            data: null,
-            messages: [
-                {
-                    code: 404,
-                    id: null,
-                    internal: true,
-                    message: `[GET] URL /${subPath} does not exist`,
-                    type: 'error'
-                }
-            ]
-        };
+describe('extendRequest()', () => {
+    it('should fill request props with valid data', async () => {
+        const expextedResponse = 'truestring';
 
         const app = createServer();
 
-        app.setNotFoundHandler(handleApiNotFound());
+        app.use(extendRequest());
 
-        app.get('/', async () => {
-            throw new Error('oops!');
+        app.get('/', async (request, response) => {
+            response.write(String(request.requestTime instanceof Date));
+            response.write(String(typeof request.requestId));
         });
 
-        const response = await request(app).get('/' + subPath)
+        const response = await request(app).get('/')
             .send()
             .parse(binaryParser)
-            .expect(404);
+            .expect(200);
 
-        const data = response.body;
+        const data: Buffer = response.body;
         expect(Buffer.isBuffer(data)).toBe(true);
 
-        const obj = JSON.parse(
-            data.toString('utf8')
-        );
+        const str: string = data.toString('utf8');
 
-        // obj
-        expect(typeof obj).toBe('object');
-        expect(obj).toStrictEqual(expectedResponse);
+        expect(str).toBe(expextedResponse);
     });
 });

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import type { HttpErrorHandler, HttpNotFoundHandler } from '@egomobile/http-server';
+import type { HttpErrorHandler, HttpNotFoundHandler, ValidationFailedHandler } from '@egomobile/http-server';
 import { apiResponse } from '..';
 
 /**
@@ -88,6 +88,60 @@ export function handleApiNotFound(): HttpNotFoundHandler {
                 message: `[${request.method}] URL ${request.url} does not exist`
             })
             .withStatus(404)
+            .send();
+    };
+}
+
+/**
+ * Creates a new handler, that handles failed input data validation,
+ * check by a schema.
+ *
+ * @example
+ * ```
+ * import createServer, { json, schema, validate } from '@egomobile/http-server'
+ * import { handleApiValidationError } from '@egomobile/api-utils'
+ *
+ * interface IMySchema {
+ *   // ...
+ * }
+ *
+ * const app = createServer()
+ *
+ * const mySchema = schema.object({
+ *   // ...
+ * })
+ *
+ * const mySchemaErrorHandler = handleApiValidationError()
+ *
+ * app.post(
+ *   '/',
+ *   [json(), validate(mySchema, mySchemaErrorHandler)],
+ *   async (request, response) => {
+ *     const body = request.body as IMySchema;
+ *
+ *     // ...
+ *   }
+ * )
+ *
+ * // ...
+ *
+ * app.listen()
+ *   .catch(console.error)
+ * ```
+ *
+ * @returns {HttpNotFoundHandler} The new handler.
+ */
+export function handleApiValidationError(): ValidationFailedHandler {
+    return async (error, request, response) => {
+        apiResponse(request, response)
+            .noSuccess()
+            .withStatus(400)
+            .addMessage({
+                message: error.message,
+                code: 400,
+                type: 'error',
+                internal: true
+            })
             .send();
     };
 }
