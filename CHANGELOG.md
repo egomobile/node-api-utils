@@ -1,5 +1,9 @@
 # Change Log (@egomobile/api-utils)
 
+## 0.4.0
+
+- add [createSwaggerSchemaForApiResponse()](https://egomobile.github.io/node-api-utils/modules.html#createSwaggerSchemaForApiResponse) function
+
 ## 0.3.0
 
 - add [extendRequest()](https://egomobile.github.io/node-api-utils/modules.html#extendRequest) middleware
