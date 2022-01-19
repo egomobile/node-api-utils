@@ -14,7 +14,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import type { OpenAPIV3 } from '@egomobile/http-server';
-import { Nilable } from '../../types/internal';
+import type { Nilable } from '../../types/internal';
 
 /**
  * Options for 'createSwaggerSchemaOfApiResponse()' function.
