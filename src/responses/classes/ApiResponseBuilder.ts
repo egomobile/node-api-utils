@@ -17,7 +17,8 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import type { IHttpRequest, IHttpResponse } from '@egomobile/http-server';
-import { List, Nilable, Nullable } from '../../types/internal';
+import type { OutgoingHttpHeaders } from 'http';
+import type { List, Nilable, Nullable } from '../../types/internal';
 import { isIterable, isNil } from '../../utils/internal';
 
 /**
@@ -159,6 +160,7 @@ export interface IWithApiResponseListOptions<T extends any = any> {
  */
 export class ApiResponseBuilder {
     private _data: Nullable<ApiResponseData> = null;
+    private _headers: OutgoingHttpHeaders = {};
     private readonly _messages: IApiResponseMessage[] = [];
     private _status = 200;
     private _success = true;
@@ -250,7 +252,9 @@ export class ApiResponseBuilder {
         if (!this.response.headersSent) {
             this.response.writeHead(this._status, {
                 'Content-Type': 'application/json; charset=UTF-8',
-                'Content-Length': String(jsonData.length)
+                'Content-Length': String(jsonData.length),
+
+                ...this._headers
             });
         }
 
@@ -266,6 +270,19 @@ export class ApiResponseBuilder {
      */
     public withData(data: Nilable<ApiResponseData>): this {
         this._data = data || null;
+
+        return this;
+    }
+
+    /**
+     * Sets additional HTTP response headers.
+     *
+     * @param {OutgoingHttpHeaders} headers Additional HTTP response headers.
+     *
+     * @returns {this} That instance.
+     */
+    public withHeaders(headers: OutgoingHttpHeaders): this {
+        this._headers = headers;
 
         return this;
     }

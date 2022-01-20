@@ -27,6 +27,16 @@ export interface ICreateSwaggerSchemaForApiResponseOptions {
 }
 
 /**
+ * Options for 'createSwaggerSchemaForApiListResponse()' function.
+ */
+export interface ICreateSwaggerSchemaForApiListResponseOptions {
+    /**
+     * The schema for the list items
+     */
+    itemsSchema?: Nilable<OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject>;
+}
+
+/**
  * Creates a Swagger schema, which describes a standard API response
  * with custom data schema.
  *
@@ -46,7 +56,7 @@ export interface ICreateSwaggerSchemaForApiResponseOptions {
  *           description: 'Operation was successful.',
  *           content: {
  *             'application/json': {
- *               schema: createApiResponseSwaggerSchema({
+ *               schema: createSwaggerSchemaForApiResponse({
  *                 dataSchema: {
  *                   type: 'object',
  *                   properties: {
@@ -66,7 +76,7 @@ export interface ICreateSwaggerSchemaForApiResponseOptions {
  * }
  * ```
  *
- * @param {ICreateSwaggerSchemaForApiResponseOptions} options Custom options.
+ * @param {ICreateSwaggerSchemaForApiResponseOptions} [options] Custom options.
  *
  * @returns {OpenAPIV3.SchemaObject} The new schema.
  */
@@ -93,7 +103,7 @@ export function createSwaggerSchemaForApiResponse(options?: Nilable<ICreateSwagg
                     properties: {
                         code: {
                             type: 'integer',
-                            description: 'A optional code, which describes the field.',
+                            description: 'A optional code, which describes the message.',
                             nullable: true,
                             example: 40000
                         },
@@ -105,7 +115,7 @@ export function createSwaggerSchemaForApiResponse(options?: Nilable<ICreateSwagg
                         },
                         internal: {
                             type: 'string',
-                            description: 'An optional ID, which describes the message.',
+                            description: 'Indicates if the message is for internal use, or maybe for an user in the frontend.',
                             default: false,
                             example: true
                         },
@@ -125,4 +135,82 @@ export function createSwaggerSchemaForApiResponse(options?: Nilable<ICreateSwagg
             }
         }
     };
+}
+
+/**
+ * Creates a Swagger schema, which describes a standard API response
+ * for a list with custom data schema for its items.
+ *
+ * @example
+ * ```
+ * import { Controller, ControllerBase, GET, IHttpRequest, IHttpResponse } from '@egomobile/http-server'
+ * import { createSwaggerSchemaForApiListResponse } from '@egomobile/api-utils'
+ *
+ * @Controller()
+ * export default class IndexController extends ControllerBase {
+ *   @GET({
+ *     path: '/',
+ *     documentation: {
+ *       summary: 'This is a description of that endpoint',
+ *       responses: {
+ *         '200': {
+ *           description: 'Operation was successful.',
+ *           content: {
+ *             'application/json': {
+ *               schema: createSwaggerSchemaForApiListResponse({
+ *                 dataSchema: {
+ *                   type: 'object',
+ *                   properties: {
+ *                     // ...
+ *                   }
+ *                 }
+ *               })
+ *             }
+ *           }
+ *         }
+ *       }
+ *     }
+ *   })
+ *   async index(request: IHttpRequest, response: IHttpResponse) {
+ *     // ...
+ *   }
+ * }
+ * ```
+ *
+ * @param {ICreateSwaggerSchemaForApiResponseOptions} [options] Custom options.
+ *
+ * @returns {OpenAPIV3.SchemaObject} The new schema.
+ */
+export function createSwaggerSchemaForApiListResponse(options?: Nilable<ICreateSwaggerSchemaForApiListResponseOptions>): OpenAPIV3.SchemaObject {
+    return createSwaggerSchemaForApiResponse({
+        dataSchema: {
+            type: 'object',
+            required: ['items', 'limit', 'offset', 'totalCount'],
+            properties: {
+                items: {
+                    type: 'array',
+                    description: 'The list of items.',
+                    items: options?.itemsSchema || {
+                        description: 'An item.',
+                        nullable: true
+                    }
+                },
+                limit: {
+                    description: 'The maximum number of items per page.',
+                    type: 'integer',
+                    minimum: 0
+                },
+                offset: {
+                    description: 'The zero-based offset inside the whole list.',
+                    type: 'integer',
+                    minimum: 0
+                },
+                totalCount: {
+                    description: 'The total number of items of the whole list.',
+                    type: 'integer',
+                    minimum: 0
+                }
+            }
+        }
+    });
 }
