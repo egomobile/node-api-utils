@@ -1,5 +1,11 @@
 # Change Log (@egomobile/api-utils)
 
+## 0.5.0
+
+- add [createSwaggerSchemaForApiListResponse()](https://egomobile.github.io/node-api-utils/modules.html#createSwaggerSchemaForApiListResponse) function
+- add [withHeaders()](https://egomobile.github.io/node-api-utils/classes/ApiResponseBuilder.html#withHeaders) method
+- (bug-)fixes
+
 ## 0.4.0
 
 - add [createSwaggerSchemaForApiResponse()](https://egomobile.github.io/node-api-utils/modules.html#createSwaggerSchemaForApiResponse) function
