@@ -1,4 +1,4 @@
-import type { IApiListQuery } from './src/requests';
+import type { IApiListQuery } from './src/requests/lists';
 
 declare module 'http' {
     export interface IncomingMessage {

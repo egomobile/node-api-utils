@@ -158,7 +158,7 @@ export function createSwaggerSchemaForApiResponse(options?: Nilable<ICreateSwagg
  *           content: {
  *             'application/json': {
  *               schema: createSwaggerSchemaForApiListResponse({
- *                 dataSchema: {
+ *                 itemsSchema: {
  *                   type: 'object',
  *                   properties: {
  *                     // ...
