@@ -14,7 +14,19 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import type { IHttpRequest, IHttpResponse } from '@egomobile/http-server';
+import type { Nilable } from '../types/internal';
 import { ApiResponseBuilder } from './classes/ApiResponseBuilder';
+
+/**
+ * Options for 'apiResponse()' function.
+ */
+export interface IApiResponseOptions {
+    /**
+     * Execute 'end()' method of response
+     * when invoke 'send()' of ApiResponseBuilder.
+     */
+    executeEnd?: Nilable<boolean>;
+}
 
 /**
  * Creates a new instance, building the data for an API response.
@@ -48,13 +60,15 @@ import { ApiResponseBuilder } from './classes/ApiResponseBuilder';
  *
  * @param {IHttpRequest} request The response context.
  * @param {IHttpResponse} response The response context.
+ * @param {Nilable<IApiResponseOptions>} [options] Custom options.
  *
  * @returns {ApiResponseBuilder} The new instance.
  */
-export function apiResponse(request: IHttpRequest, response: IHttpResponse): ApiResponseBuilder {
+export function apiResponse(request: IHttpRequest, response: IHttpResponse, options?: Nilable<IApiResponseOptions>): ApiResponseBuilder {
     return new ApiResponseBuilder({
         request,
-        response
+        response,
+        executeEnd: options?.executeEnd
     });
 }
 

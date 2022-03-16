@@ -81,6 +81,11 @@ export interface IApiResponse {
  */
 export interface IApiResponseBuilderOptions {
     /**
+     * Execute 'end()' method of response
+     * when invoke 'send()' of ApiResponseBuilder.
+     */
+    executeEnd?: Nilable<boolean>;
+    /**
      * The underlying request context.
      */
     request: IHttpRequest;
@@ -160,6 +165,7 @@ export interface IWithApiResponseListOptions<T extends any = any> {
  */
 export class ApiResponseBuilder {
     private _data: Nullable<ApiResponseData> = null;
+    private readonly _executeEnd: boolean;
     private _headers: OutgoingHttpHeaders = {};
     private readonly _messages: IApiResponseMessage[] = [];
     private _status = 200;
@@ -173,6 +179,8 @@ export class ApiResponseBuilder {
     public constructor(options: IApiResponseBuilderOptions) {
         this.request = options.request;
         this.response = options.response;
+
+        this._executeEnd = !!options.executeEnd;
     }
 
     /**
@@ -220,14 +228,39 @@ export class ApiResponseBuilder {
     }
 
     /**
+     * Gets the data to return.
+     *
+     * @returns {Nullable<ApiResponseData>} The data to return.
+     */
+    public get data(): Nullable<ApiResponseData> {
+        return this._data;
+    }
+
+    /**
+     * Gets the current HTTP response headers to add to response.
+     *
+     * @returns {OutgoingHttpHeaders} The HTTP response headers.
+     */
+    public get headers(): OutgoingHttpHeaders {
+        return this._headers;
+    }
+
+    /**
+     * Get the messages to return.
+     *
+     * @returns {IApiResponseMessage[]} The messages to return.
+     */
+    public get messages(): IApiResponseMessage[] {
+        return this._messages;
+    }
+
+    /**
      * Sets the value for 'success' result prop to '(false)'.
      *
      * @returns {this} That instance.
      */
     public noSuccess(): this {
-        this._success = false;
-
-        return this;
+        return this.withSuccess(false);
     }
 
     /**
@@ -259,6 +292,28 @@ export class ApiResponseBuilder {
         }
 
         this.response.write(jsonData);
+
+        if (this._executeEnd) {
+            this.response.end();
+        }
+    }
+
+    /**
+     * Gets the current status code.
+     *
+     * @returns {number} The status code.
+     */
+    public get status(): number {
+        return this._status;
+    }
+
+    /**
+     * Gets the value for the 'success' property of the response.
+     *
+     * @returns {boolean} The value of 'success' property of the response.
+     */
+    public get success(): boolean {
+        return this._success;
     }
 
     /**
@@ -328,6 +383,19 @@ export class ApiResponseBuilder {
      */
     public withStatus(code: number): this {
         this._status = code;
+
+        return this;
+    }
+
+    /**
+     * Sets the value of the 'success' property.
+     *
+     * @param {boolean} value The new value.
+     *
+     * @returns {this} That instance.
+     */
+    public withSuccess(value = true): this {
+        this._success = !!value;
 
         return this;
     }
