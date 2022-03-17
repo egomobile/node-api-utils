@@ -1,5 +1,17 @@
 # Change Log (@egomobile/api-utils)
 
+## 0.6.1
+
+- add following props and methods to [ApiResponseBuilder](https://egomobile.github.io/node-api-utils/classes/ApiResponseBuilder.html):
+  - `data`
+  - `headers`
+  - `messages`
+  - `status`
+  - `success`
+  - `withSuccess()`
+- add `executeEnd` setting to [IApiResponseBuilderOptions](https://egomobile.github.io/node-api-utils/interfaces/IApiResponseBuilderOptions.html)
+- add `options` argument to [apiResponse()](https://egomobile.github.io/node-api-utils/modules.html#apiResponse)
+
 ## 0.5.0
 
 - add [createSwaggerSchemaForApiListResponse()](https://egomobile.github.io/node-api-utils/modules.html#createSwaggerSchemaForApiListResponse) function
