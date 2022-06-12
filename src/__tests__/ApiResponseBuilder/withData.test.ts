@@ -13,29 +13,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import { ApiResponseBuilder } from '../..';
+import { ApiResponseBuilder } from "../..";
 
-describe('ApiResponseBuilder.withData', () => {
-    it('should save valid value for data result prop', async () => {
+describe("ApiResponseBuilder.withData", () => {
+    it("should save valid value for data result prop", async () => {
         const data: any = {
-            foo: 'bar',
-            baz: 42
+            "foo": "bar",
+            "baz": 42
         };
 
-        const obj = new ApiResponseBuilder({ request: {} as any, response: {} as any })
+        const obj = new ApiResponseBuilder({ "request": {} as any, "response": {} as any })
             .withData(data)
             .create();
 
         // obj.success
-        expect(typeof obj).toBe('object');
-        expect(typeof obj.success).toBe('boolean');
+        expect(typeof obj).toBe("object");
+        expect(typeof obj.success).toBe("boolean");
         expect(obj.success).toBe(true);
         // obj.messages
-        expect(typeof obj.messages).toBe('object');
+        expect(typeof obj.messages).toBe("object");
         expect(Array.isArray(obj.messages)).toBe(true);
         expect(obj.messages.length).toBe(0);
         // obj.data
-        expect(typeof obj.data).toBe('object');
+        expect(typeof obj.data).toBe("object");
         expect(obj.data).toStrictEqual(data);
     });
 });

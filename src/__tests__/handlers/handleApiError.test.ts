@@ -13,30 +13,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import createServer from '@egomobile/http-server';
-import request from 'supertest';
-import { handleApiError } from '../../responses/handlers';
-import { binaryParser } from '../utils';
+import createServer from "@egomobile/http-server";
+import request from "supertest";
+import { handleApiError } from "../../responses/handlers";
+import { binaryParser } from "../utils";
 
-describe('handleApiError()', () => {
-    it.each(['foo', 'bar', 'baz'])('should save valid value to internal prop', async (txt) => {
+describe("handleApiError()", () => {
+    it.each(["foo", "bar", "baz"])("should save valid value to internal prop", async (txt) => {
         const expectedResponse: any = {
-            success: false,
-            data: null,
-            messages: [
+            "success": false,
+            "data": null,
+            "messages": [
                 {
-                    code: 500,
-                    id: null,
-                    internal: false,
-                    message: 'Unexpected server error',
-                    type: 'error'
+                    "code": 500,
+                    "id": null,
+                    "internal": false,
+                    "message": "Unexpected server error",
+                    "type": "error"
                 },
                 {
-                    code: 500,
-                    id: null,
-                    internal: true,
-                    message: `Unexpected server error: Error: ${txt}!`,
-                    type: 'error'
+                    "code": 500,
+                    "id": null,
+                    "internal": true,
+                    "message": `Unexpected server error: Error: ${txt}!`,
+                    "type": "error"
                 }
             ]
         };
@@ -45,11 +45,11 @@ describe('handleApiError()', () => {
 
         app.setErrorHandler(handleApiError());
 
-        app.get('/', async () => {
-            throw new Error(txt + '!');
+        app.get("/", async () => {
+            throw new Error(txt + "!");
         });
 
-        const response = await request(app).get('/')
+        const response = await request(app).get("/")
             .send()
             .parse(binaryParser)
             .expect(500);
@@ -58,11 +58,11 @@ describe('handleApiError()', () => {
         expect(Buffer.isBuffer(data)).toBe(true);
 
         const obj = JSON.parse(
-            data.toString('utf8')
+            data.toString("utf8")
         );
 
         // obj
-        expect(typeof obj).toBe('object');
+        expect(typeof obj).toBe("object");
         expect(obj).toStrictEqual(expectedResponse);
     });
 });

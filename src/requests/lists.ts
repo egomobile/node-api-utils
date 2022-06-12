@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import type { HttpMiddleware } from '@egomobile/http-server';
-import joi from 'joi';
-import { apiResponse } from '..';
-import { Nilable } from '../types/internal';
-import { getEmptyArray } from '../utils/internal';
+import type { HttpMiddleware } from "@egomobile/http-server";
+import joi from "joi";
+import { apiResponse } from "..";
+import { Nilable } from "../types/internal";
+import { getEmptyArray } from "../utils/internal";
 
 /**
  * Valid values for sort directions.
  */
-export type ApiListQuerySortDirection = 'asc' | 'desc';
+export type ApiListQuerySortDirection = "asc" | "desc";
 
 /**
  * Value type for 'IApiListQuery.sort' prop.
@@ -76,10 +76,10 @@ export type ValidFieldNameItemValue = string | RegExp | ValidFieldNamePredicate;
 export type ValidFieldNamePredicate = (fieldName: string) => boolean;
 
 const listQueryParamsSchema = joi.object({
-    limit: joi.number().strict().min(0).required(),
-    offset: joi.number().strict().min(0).required(),
-    sort: joi.object()
-        .pattern(/^/, joi.string().strict().valid('asc', 'desc').required())
+    "limit": joi.number().strict().min(0).required(),
+    "offset": joi.number().strict().min(0).required(),
+    "sort": joi.object()
+        .pattern(/^/, joi.string().strict().valid("asc", "desc").required())
         .required()
 });
 
@@ -124,9 +124,10 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
     if (optionsOrValidFieldNames) {
         if (Array.isArray(optionsOrValidFieldNames)) {
             options = {
-                validFieldNames: optionsOrValidFieldNames as ValidFieldNameItemValue[]
+                "validFieldNames": optionsOrValidFieldNames as ValidFieldNameItemValue[]
             };
-        } else {
+        }
+        else {
             options = optionsOrValidFieldNames as IParseListQueryOptions;
         }
     }
@@ -138,10 +139,16 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
 
     const getInvalidFieldNames: GetInvalidFieldNamesPredicate =
         validFieldNamesPredicates?.length ?
-            (sort) => Object.keys(sort)
-                .filter(
-                    (fieldName) => validFieldNamesPredicates!.some(predicate => !predicate(fieldName))
-                )
+            (sort) => {
+                return Object.keys(sort)
+                    .filter(
+                        (fieldName) => {
+                            return !validFieldNamesPredicates!.some(predicate => {
+                                return predicate(fieldName);
+                            });
+                        }
+                    );
+            }
             : getEmptyArray;
 
     // we do not need these things anymore => cleanup memory
@@ -150,30 +157,31 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
 
     return async (request, response, next) => {
         const listQuery: IApiListQuery = {
-            limit: 0,
-            offset: 0,
-            sort: {}
+            "limit": 0,
+            "offset": 0,
+            "sort": {}
         };
 
         if (request.query) {
-            listQuery.limit = parseInt(request.query.get('limit') || '0');
-            listQuery.offset = parseInt(request.query.get('offset') || '0');
+            listQuery.limit = parseInt(request.query.get("limit") || "0");
+            listQuery.offset = parseInt(request.query.get("offset") || "0");
 
             // extract query params for "walking" through lists
             //
             // example: manufactorer,desc;color;model,asc
-            request.query.get('sort')?.split(';')  // separate columns
+            request.query.get("sort")?.split(";")  // separate columns
                 .forEach((fieldWithSort: string) => {
                     let fieldName: string;
                     let sortDir: string;
 
-                    const sep = fieldWithSort.indexOf(',');
+                    const sep = fieldWithSort.indexOf(",");
                     if (sep > -1) {
                         fieldName = fieldWithSort.substring(0, sep);
                         sortDir = fieldWithSort.substring(sep + 1);
-                    } else {
+                    }
+                    else {
                         fieldName = fieldWithSort;
-                        sortDir = 'asc';
+                        sortDir = "asc";
                     }
 
                     listQuery.sort[fieldName] = sortDir as ApiListQuerySortDirection;
@@ -187,7 +195,8 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
                 request.listQuery = listQuery;
 
                 next();
-            } else {
+            }
+            else {
                 // at least one field is invalid
 
                 const apiResp = apiResponse(request, response)
@@ -196,31 +205,32 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
 
                 invalidFieldNames.forEach((fieldName) => {
                     apiResp.addMessage({
-                        code: 1,
-                        type: 'error',
-                        message: `Following list query field is invalid: ${fieldName}`
+                        "code": 1,
+                        "type": "error",
+                        "message": `Following list query field is invalid: ${fieldName}`
                     });
                 });
 
                 apiResp.send();
             }
-        } else {
+        }
+        else {
             // invalid format of listQuery
 
             const apiResp = apiResponse(request, response)
                 .noSuccess()
                 .addMessage({
-                    code: 2,
-                    type: 'error',
-                    message: `List query parameters are invalid: ${validationResult.error.message}`
+                    "code": 2,
+                    "type": "error",
+                    "message": `List query parameters are invalid: ${validationResult.error.message}`
                 })
                 .withStatus(400);
 
             if (validationResult.warning) {
                 apiResp.addMessage({
-                    code: 3,
-                    type: 'warn',
-                    message: `Warning when parsing list query parameters: ${validationResult.warning.message}`
+                    "code": 3,
+                    "type": "warn",
+                    "message": `Warning when parsing list query parameters: ${validationResult.warning.message}`
                 });
             }
 
@@ -230,12 +240,16 @@ export function parseListQuery(optionsOrValidFieldNames?: Nilable<IParseListQuer
 }
 
 function toValidFieldNamePredicate(value: ValidFieldNameItemValue): ValidFieldNamePredicate {
-    if (typeof value === 'string') {
-        return (fieldName) => value === fieldName;
+    if (typeof value === "string") {
+        return (fieldName) => {
+            return value === fieldName;
+        };
     }
 
     if (value instanceof RegExp) {
-        return (fieldName) => value.test(fieldName);
+        return (fieldName) => {
+            return value.test(fieldName);
+        };
     }
 
     return value;

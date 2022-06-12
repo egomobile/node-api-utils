@@ -13,60 +13,60 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import createServer, { json, schema, validate } from '@egomobile/http-server';
-import request from 'supertest';
-import { handleApiValidationError } from '../../responses/handlers';
-import { binaryParser } from '../utils';
+import createServer, { json, schema, validate } from "@egomobile/http-server";
+import request from "supertest";
+import { handleApiValidationError } from "../../responses/handlers";
+import { binaryParser } from "../utils";
 
 const testSchema = schema.object({
-    email: schema.string().strict().email().required(),
-    name: schema.string().strict().trim().min(1).optional()
+    "email": schema.string().strict().email().required(),
+    "name": schema.string().strict().trim().min(1).optional()
 });
 
 const validData = [{
-    email: 'marcel.kloubert@e-go-mobile.com'
+    "email": "marcel.kloubert@e-go-mobile.com"
 }, {
-    email: 'marcel.kloubert@e-go-mobile.com',
-    name: 'Marcel Kloubert'
+    "email": "marcel.kloubert@e-go-mobile.com",
+    "name": "Marcel Kloubert"
 }];
 
 const invalidData = [{}, {
-    email: 'foo'
+    "email": "foo"
 }, {
-    email: 'foo',
-    name: 'Bar Baz'
+    "email": "foo",
+    "name": "Bar Baz"
 }, {
-    email: 'foo',
-    name: ' Bar Baz'
+    "email": "foo",
+    "name": " Bar Baz"
 }, {
-    name: 'Marcel Kloubert'
+    "name": "Marcel Kloubert"
 }];
 
-describe('handleApiValidationError()', () => {
-    it.each(validData)('should return 200 if submit valid data', async (vd) => {
+describe("handleApiValidationError()", () => {
+    it.each(validData)("should return 200 if submit valid data", async (vd) => {
         const app = createServer();
 
         app.post(
-            '/',
+            "/",
             [json(), validate(testSchema, handleApiValidationError())],
             async () => { });
 
-        await request(app).post('/')
+        await request(app).post("/")
             .send(JSON.stringify(vd))
             .parse(binaryParser)
             .expect(200);
     });
 
-    it.each(invalidData)('should return 200 if submit valid data', async (ivd) => {
+    it.each(invalidData)("should return 200 if submit valid data", async (ivd) => {
         const expectedResponse: any = {
-            success: false,
-            data: null,
-            messages: [
+            "success": false,
+            "data": null,
+            "messages": [
                 {
-                    code: 400,
-                    id: null,
-                    internal: true,
-                    type: 'error'
+                    "code": 400,
+                    "id": null,
+                    "internal": true,
+                    "type": "error"
                 }
             ]
         };
@@ -74,11 +74,11 @@ describe('handleApiValidationError()', () => {
         const app = createServer();
 
         app.post(
-            '/',
+            "/",
             [json(), validate(testSchema, handleApiValidationError())],
             async () => { });
 
-        const response = await request(app).post('/')
+        const response = await request(app).post("/")
             .send(JSON.stringify(ivd))
             .parse(binaryParser)
             .expect(400);
@@ -87,13 +87,13 @@ describe('handleApiValidationError()', () => {
         expect(Buffer.isBuffer(data)).toBe(true);
 
         const obj = JSON.parse(
-            data.toString('utf8')
+            data.toString("utf8")
         );
 
         expectedResponse.messages[0].message = obj.messages[0].message;
 
         // obj
-        expect(typeof obj).toBe('object');
+        expect(typeof obj).toBe("object");
         expect(obj).toStrictEqual(expectedResponse);
     });
 });

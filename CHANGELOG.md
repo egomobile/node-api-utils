@@ -1,5 +1,14 @@
 # Change Log (@egomobile/api-utils)
 
+## 1.0.0
+
+- fix [parseListQuery()](https://egomobile.github.io/node-api-utils/modules.html#parseListQuery)
+- apply new [eslint-config-ego](https://github.com/egomobile/eslint-config-ego) settings
+- module requires at least:
+  - [Node 14+](https://nodejs.org/gl/blog/release/v14.0.0/)
+  - [node-http-server 0.34.0+](https://github.com/egomobile/node-http-server)
+- code and other project cleanups
+
 ## 0.6.1
 
 - add following props and methods to [ApiResponseBuilder](https://egomobile.github.io/node-api-utils/classes/ApiResponseBuilder.html):
