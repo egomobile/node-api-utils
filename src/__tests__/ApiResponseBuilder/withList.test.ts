@@ -13,77 +13,77 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import { ApiResponseBuilder } from '../..';
+import { ApiResponseBuilder } from "../..";
 
 function* createItems(count: number) {
     for (let i = 0; i < count; i++) {
         yield {
-            id: i,
-            foo: 'bar'
+            "id": i,
+            "foo": "bar"
         };
     }
 }
 
-describe('ApiResponseBuilder.withList', () => {
-    it('should save valid value for data result prop if array', async () => {
+describe("ApiResponseBuilder.withList", () => {
+    it("should save valid value for data result prop if array", async () => {
         for (let i = 0; i < 100; i++) {
             const items = [...createItems(i)];
 
             const expectedData: any = {
-                limit: items.length,
-                offset: 0,
-                totalCount: items.length,
+                "limit": items.length,
+                "offset": 0,
+                "totalCount": items.length,
                 items
             };
 
-            const obj = new ApiResponseBuilder({ request: {} as any, response: {} as any })
+            const obj = new ApiResponseBuilder({ "request": {} as any, "response": {} as any })
                 .withList({
                     items
                 })
                 .create();
 
             // obj.success
-            expect(typeof obj).toBe('object');
-            expect(typeof obj.success).toBe('boolean');
+            expect(typeof obj).toBe("object");
+            expect(typeof obj.success).toBe("boolean");
             expect(obj.success).toBe(true);
             // obj.messages
-            expect(typeof obj.messages).toBe('object');
+            expect(typeof obj.messages).toBe("object");
             expect(Array.isArray(obj.messages)).toBe(true);
             expect(obj.messages.length).toBe(0);
             // obj.data
-            expect(typeof obj.data).toBe('object');
+            expect(typeof obj.data).toBe("object");
             expect(obj.data).toStrictEqual(expectedData);
         }
     });
 
-    it('should save valid value for data result prop if iterator', async () => {
+    it("should save valid value for data result prop if iterator", async () => {
         for (let i = 0; i < 100; i++) {
             const items = createItems(i);
             const itemsAsArray = [...createItems(i)];
 
-            const obj = new ApiResponseBuilder({ request: {} as any, response: {} as any })
+            const obj = new ApiResponseBuilder({ "request": {} as any, "response": {} as any })
                 .withList({
                     items
                 })
                 .create();
 
             const expectedData: any = {
-                limit: itemsAsArray.length,
-                offset: 0,
-                totalCount: itemsAsArray.length,
-                items: itemsAsArray
+                "limit": itemsAsArray.length,
+                "offset": 0,
+                "totalCount": itemsAsArray.length,
+                "items": itemsAsArray
             };
 
             // obj.success
-            expect(typeof obj).toBe('object');
-            expect(typeof obj.success).toBe('boolean');
+            expect(typeof obj).toBe("object");
+            expect(typeof obj.success).toBe("boolean");
             expect(obj.success).toBe(true);
             // obj.messages
-            expect(typeof obj.messages).toBe('object');
+            expect(typeof obj.messages).toBe("object");
             expect(Array.isArray(obj.messages)).toBe(true);
             expect(obj.messages.length).toBe(0);
             // obj.data
-            expect(typeof obj.data).toBe('object');
+            expect(typeof obj.data).toBe("object");
             expect(obj.data).toStrictEqual(expectedData);
         }
     });

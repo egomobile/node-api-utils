@@ -18,9 +18,9 @@ export function getEmptyArray<T extends any = any>(): T[] {
 }
 
 export function isNil(val: any): val is (null | undefined) {
-    return typeof val === 'undefined' || val === null;
+    return typeof val === "undefined" || val === null;
 }
 
 export function isIterable(val: any) {
-    return typeof val?.[Symbol.iterator] === 'function';
+    return typeof val?.[Symbol.iterator] === "function";
 }

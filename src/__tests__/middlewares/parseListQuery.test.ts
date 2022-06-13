@@ -13,90 +13,94 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import createServer, { query } from '@egomobile/http-server';
-import request from 'supertest';
-import { parseListQuery } from '../..';
-import { binaryParser } from '../utils';
+import createServer, { query } from "@egomobile/http-server";
+import request from "supertest";
+import { parseListQuery } from "../..";
+import { binaryParser } from "../utils";
 
 const validParams = [
     {},
     {
-        limit: 1
+        "limit": 1
     },
     {
-        limit: 1,
-        offset: 2
+        "limit": 1,
+        "offset": 2
     },
     {
-        limit: 3,
-        sort: 'foo;bar,desc;baz,asc'
+        "limit": 3,
+        "sort": "foo;bar,desc;baz,asc"
     },
     {
-        limit: 3,
-        offset: 4,
-        sort: 'foo;bar,asc;baz,asc'
+        "limit": 3,
+        "offset": 4,
+        "sort": "foo;bar,asc;baz,asc"
     },
     {
-        offset: 0
+        "offset": 0
     },
     {
-        offset: 5,
-        sort: 'foo;bar,desc;baz,asc'
+        "offset": 5,
+        "sort": "foo;bar,desc;baz,asc"
     },
     {
-        sort: 'foo,desc;bar;baz,asc'
+        "sort": "foo,desc;bar;baz,asc"
     }
 ];
 
 const invalidParams = [
     {
-        limit: 'foo'
+        "limit": "foo"
     },
     {
-        limit: -1
+        "limit": -1
     },
     {
-        limit: 1,
-        offset: -2
+        "limit": 1,
+        "offset": -2
     },
     {
-        limit: 3,
-        sort: 'foo,test;bar,desc;baz,asc'
+        "limit": 3,
+        "sort": "foo,test;bar,desc;baz,asc"
     }
 ];
 
-describe('parseListQuery()', () => {
-    it.each(validParams)('should return 200, if submit valid query params', async (params) => {
+describe("parseListQuery()", () => {
+    it.each(validParams)("should return 200, if submit valid query params", async (params) => {
         const q = Object.entries(params)
-            .map(e => String(e[0]) + '=' + String(encodeURIComponent(e[1])))
-            .join('&');
+            .map((entry) => {
+                return String(entry[0]) + "=" + String(encodeURIComponent(entry[1]));
+            })
+            .join("&");
 
         const app = createServer();
 
-        app.get('/', [query(), parseListQuery()], async (request, response) => {
+        app.get("/", [query(), parseListQuery()], async (request, response) => {
             response.write(
-                Buffer.from(JSON.stringify(request.listQuery), 'utf8')
+                Buffer.from(JSON.stringify(request.listQuery), "utf8")
             );
         });
 
-        await request(app).get('/?' + q)
+        await request(app).get("/?" + q)
             .send()
             .parse(binaryParser)
             .expect(200);
     });
 
-    it.each(invalidParams)('should return 400, if submit invalid query params', async (params) => {
+    it.each(invalidParams)("should return 400, if submit invalid query params", async (params) => {
         const q = Object.entries(params)
-            .map(e => String(e[0]) + '=' + String(encodeURIComponent(e[1])))
-            .join('&');
+            .map((entry) => {
+                return String(entry[0]) + "=" + String(encodeURIComponent(entry[1]));
+            })
+            .join("&");
 
         const app = createServer();
 
-        app.get('/', [query(), parseListQuery()], async (request, response) => {
+        app.get("/", [query(), parseListQuery()], async (request, response) => {
             response.write(JSON.stringify(request.listQuery));
         });
 
-        await request(app).get('/?' + q)
+        await request(app).get("/?" + q)
             .send()
             .parse(binaryParser)
             .expect(400);

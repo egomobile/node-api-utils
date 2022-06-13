@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import type { IHttpRequest, IHttpResponse } from '@egomobile/http-server';
-import type { Nilable } from '../types/internal';
-import { ApiResponseBuilder } from './classes/ApiResponseBuilder';
+import type { IHttpRequest, IHttpResponse } from "@egomobile/http-server";
+import type { Nilable } from "../types/internal";
+import { ApiResponseBuilder } from "./classes/ApiResponseBuilder";
 
 /**
  * Options for 'apiResponse()' function.
@@ -68,11 +68,11 @@ export function apiResponse(request: IHttpRequest, response: IHttpResponse, opti
     return new ApiResponseBuilder({
         request,
         response,
-        executeEnd: options?.executeEnd
+        "executeEnd": options?.executeEnd
     });
 }
 
-export * from './classes';
-export * from './handlers';
-export * from './swagger';
+export * from "./classes";
+export * from "./handlers";
+export * from "./swagger";
 

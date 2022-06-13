@@ -16,10 +16,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import type { IHttpRequest, IHttpResponse } from '@egomobile/http-server';
-import type { OutgoingHttpHeaders } from 'http';
-import type { List, Nilable, Nullable } from '../../types/internal';
-import { isIterable, isNil } from '../../utils/internal';
+import type { IHttpRequest, IHttpResponse } from "@egomobile/http-server";
+import type { OutgoingHttpHeaders } from "http";
+import type { List, Nilable, Nullable } from "../../types/internal";
+import { isIterable, isNil } from "../../utils/internal";
 
 /**
  * Format of response data.
@@ -29,7 +29,7 @@ export type ApiResponseData = Record<string, any>;
 /**
  * Type of a API response message.
  */
-export type ApiResponseMessageType = 'error' | 'info' | 'warn';
+export type ApiResponseMessageType = "error" | "info" | "warn";
 
 /**
  * Options for adding a message to a response.
@@ -195,20 +195,21 @@ export class ApiResponseBuilder {
     public addMessage(options: IAddApiResponseMessageOptions): this;
     public addMessage(optionsOrMessage: IAddApiResponseMessageOptions | string): this {
         let options: IAddApiResponseMessageOptions;
-        if (typeof optionsOrMessage === 'object') {
+        if (typeof optionsOrMessage === "object") {
             options = optionsOrMessage;
-        } else {
+        }
+        else {
             options = {
-                message: optionsOrMessage
+                "message": optionsOrMessage
             };
         }
 
         this._messages.push({
-            code: options.code || null,
-            id: options.id || null,
-            internal: !!options.internal,
-            message: options.message,
-            type: options.type || 'info'
+            "code": options.code || null,
+            "id": options.id || null,
+            "internal": !!options.internal,
+            "message": options.message,
+            "type": options.type || "info"
         });
 
         return this;
@@ -221,9 +222,9 @@ export class ApiResponseBuilder {
      */
     public create(): IApiResponse {
         return {
-            success: this._success,
-            data: this._data,
-            messages: this._messages
+            "success": this._success,
+            "data": this._data,
+            "messages": this._messages
         };
     }
 
@@ -279,13 +280,13 @@ export class ApiResponseBuilder {
      */
     public send(): void {
         const jsonData = Buffer.from(
-            JSON.stringify(this.create()), 'utf-8'
+            JSON.stringify(this.create()), "utf-8"
         );
 
         if (!this.response.headersSent) {
             this.response.writeHead(this._status, {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Content-Length': String(jsonData.length),
+                "Content-Type": "application/json; charset=UTF-8",
+                "Content-Length": String(jsonData.length),
 
                 ...this._headers
             });
@@ -355,9 +356,10 @@ export class ApiResponseBuilder {
         let options: IWithApiResponseListOptions;
         if (isIterable(optionsOrItems)) {
             options = {
-                items: optionsOrItems as List
+                "items": optionsOrItems as List
             };
-        } else {
+        }
+        else {
             options = optionsOrItems as IWithApiResponseListOptions;
         }
 
@@ -365,9 +367,9 @@ export class ApiResponseBuilder {
             options.items : [...options.items];
 
         this._data = {
-            offset: isNil(options.offset) ? 0 : options.offset,
-            totalCount: isNil(options.totalCount) ? items.length : options.totalCount,
-            limit: isNil(options.limit) ? items.length : options.limit,
+            "offset": isNil(options.offset) ? 0 : options.offset,
+            "totalCount": isNil(options.totalCount) ? items.length : options.totalCount,
+            "limit": isNil(options.limit) ? items.length : options.limit,
             items
         } as any;
 

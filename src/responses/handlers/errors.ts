@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import type { HttpErrorHandler, HttpNotFoundHandler, ValidationFailedHandler } from '@egomobile/http-server';
-import { apiResponse } from '..';
+import type { HttpErrorHandler, HttpNotFoundHandler, ValidationFailedHandler } from "@egomobile/http-server";
+import { apiResponse } from "..";
 
 /**
  * Creates a new handler for 404 errors.
@@ -41,16 +41,16 @@ export function handleApiError(): HttpErrorHandler {
         apiResponse(request, response)
             .noSuccess()
             .addMessage({
-                code: 500,
-                type: 'error',
-                internal: false,
-                message: 'Unexpected server error'
+                "code": 500,
+                "type": "error",
+                "internal": false,
+                "message": "Unexpected server error"
             })
             .addMessage({
-                code: 500,
-                type: 'error',
-                internal: true,
-                message: `Unexpected server error: ${String(error)}`
+                "code": 500,
+                "type": "error",
+                "internal": true,
+                "message": `Unexpected server error: ${String(error)}`
             })
             .withStatus(500)
             .send();
@@ -82,10 +82,10 @@ export function handleApiNotFound(): HttpNotFoundHandler {
         apiResponse(request, response)
             .noSuccess()
             .addMessage({
-                code: 404,
-                type: 'error',
-                internal: true,
-                message: `[${request.method}] URL ${request.url} does not exist`
+                "code": 404,
+                "type": "error",
+                "internal": true,
+                "message": `[${request.method}] URL ${request.url} does not exist`
             })
             .withStatus(404)
             .send();
@@ -137,10 +137,10 @@ export function handleApiValidationError(): ValidationFailedHandler {
             .noSuccess()
             .withStatus(400)
             .addMessage({
-                message: error.message,
-                code: 400,
-                type: 'error',
-                internal: true
+                "message": error.message,
+                "code": 400,
+                "type": "error",
+                "internal": true
             })
             .send();
     };

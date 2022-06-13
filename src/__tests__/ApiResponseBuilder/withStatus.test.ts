@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import { ApiResponseBuilder } from '../..';
+import { ApiResponseBuilder } from "../..";
 
-describe('ApiResponseBuilder.withStatus', () => {
-    it('should save valid status code to internal prop', async () => {
+describe("ApiResponseBuilder.withStatus", () => {
+    it("should save valid status code to internal prop", async () => {
         for (let i = 200; i < 600; i++) {
-            const response = new ApiResponseBuilder({ request: {} as any, response: {} as any })
+            const response = new ApiResponseBuilder({ "request": {} as any, "response": {} as any })
                 .withStatus(i);
 
             // eslint-disable-next-line no-underscore-dangle
             const value: any = (response as any)._status;
 
-            expect(typeof value).toBe('number');
+            expect(typeof value).toBe("number");
             expect(value).toBe(i);
         }
     });

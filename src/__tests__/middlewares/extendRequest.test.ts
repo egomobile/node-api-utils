@@ -13,25 +13,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import createServer from '@egomobile/http-server';
-import request from 'supertest';
-import { extendRequest } from '../..';
-import { binaryParser } from '../utils';
+import createServer from "@egomobile/http-server";
+import request from "supertest";
+import { extendRequest } from "../..";
+import { binaryParser } from "../utils";
 
-describe('extendRequest()', () => {
-    it('should fill request props with valid data', async () => {
-        const expextedResponse = 'truestring';
+describe("extendRequest()", () => {
+    it("should fill request props with valid data", async () => {
+        const expextedResponse = "truestring";
 
         const app = createServer();
 
         app.use(extendRequest());
 
-        app.get('/', async (request, response) => {
+        app.get("/", async (request, response) => {
             response.write(String(request.requestTime instanceof Date));
             response.write(String(typeof request.requestId));
         });
 
-        const response = await request(app).get('/')
+        const response = await request(app).get("/")
             .send()
             .parse(binaryParser)
             .expect(200);
@@ -39,7 +39,7 @@ describe('extendRequest()', () => {
         const data: Buffer = response.body;
         expect(Buffer.isBuffer(data)).toBe(true);
 
-        const str: string = data.toString('utf8');
+        const str: string = data.toString("utf8");
 
         expect(str).toBe(expextedResponse);
     });
