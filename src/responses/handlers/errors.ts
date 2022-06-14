@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import type { HttpErrorHandler, HttpNotFoundHandler, ValidationFailedHandler } from "@egomobile/http-server";
+import { HttpErrorHandler, HttpNotFoundHandler, ParseErrorHandler, ValidationFailedHandler } from "@egomobile/http-server";
 import { apiResponse } from "..";
 
 /**
@@ -88,6 +88,52 @@ export function handleApiNotFound(): HttpNotFoundHandler {
                 "message": `[${request.method}] URL ${request.url} does not exist`
             })
             .withStatus(404)
+            .send();
+    };
+}
+
+/**
+ * Creates a new function, which handles parse errors.
+ *
+ * @example
+ * ```
+ * import createServer, { json } from '@egomobile/http-server'
+ * import { handleApiParseError } from '@egomobile/api-utils'
+ *
+ * const app = createServer()
+ *
+ * const myParseErrorHandler = handleApiParseError()
+ *
+ * app.post(
+ *   '/',
+ *   [json({ onParsingFailed: myParseErrorHandler })],
+ *   async (request, response) => {
+ *     // at this point, JSON data has been parsed successfully
+ *     // and is stored in 'request.body'
+ *   }
+ * )
+ *
+ * // ...
+ *
+ * app.listen()
+ *   .catch(console.error)
+ * ```
+ *
+ * @returns {HttpNotFoundHandler} The new handler.
+ */
+export function handleApiParseError(): ParseErrorHandler {
+    return async (error, request, response) => {
+        const message = String(error.innerError?.error ?? error.message ?? "").trim();
+
+        apiResponse(request, response)
+            .noSuccess()
+            .withStatus(400)
+            .addMessage({
+                "message": message,
+                "code": 400,
+                "type": "error",
+                "internal": true
+            })
             .send();
     };
 }
