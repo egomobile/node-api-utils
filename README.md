@@ -68,14 +68,27 @@ app.listen().catch(console.error);
 #### Error handling
 
 ```typescript
-import createServer from "@egomobile/http-server";
-import { handleApiError, handleApiNotFound } from "@egomobile/api-utils";
+import createServer, { json } from "@egomobile/http-server";
+import {
+  handleApiError,
+  handleApiNotFound,
+  handleApiParseError,
+} from "@egomobile/api-utils";
 
 const app = createServer();
 
 // set error handlers
 app.setErrorHandler(handleApiError());
 app.setNotFoundHandler(handleApiNotFound());
+
+app.post(
+  "/",
+  // handle parsing errors for JSON data
+  [json({ onParsingFailed: handleApiParseError() })],
+  async (request, response) => {
+    response.write("OK: " + JSON.stringify(request.body!));
+  }
+);
 
 // ...
 

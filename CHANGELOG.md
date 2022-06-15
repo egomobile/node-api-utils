@@ -1,5 +1,9 @@
 # Change Log (@egomobile/api-utils)
 
+## 1.1.0
+
+- implement `handleApiParseError()`, which creates standardrized error handlers for invalid JSON, e.g.
+
 ## 1.0.0
 
 - fix [parseListQuery()](https://egomobile.github.io/node-api-utils/modules.html#parseListQuery)
