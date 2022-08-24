@@ -16,8 +16,9 @@
 import type { ControllersSwaggerBaseDocument, OpenAPIV3 } from "@egomobile/http-server";
 import fs from "fs";
 import path from "path";
-import type { Nilable } from "../../types/internal";
-import { isNil } from "../../utils/internal";
+import type { DebugAction } from "../types";
+import type { DebugActionWithoutSource, Nilable } from "../types/internal";
+import { isNil, toDebugActionSafe } from "../utils/internal";
 
 const { readdir, stat } = fs.promises;
 
@@ -39,6 +40,10 @@ export interface ILoadSwaggerDocumentationFileFilterContext {
  * Options for `loadSwaggerDocumentation()` and `loadSwaggerDocumentationSync()` functions.
  */
 export interface ILoadSwaggerDocumentationOptions {
+    /**
+     * The optional debug action / handler.
+     */
+    debug?: Nilable<DebugAction>;
     /**
      * The root directory of the documentation.
      *
@@ -99,6 +104,7 @@ const componentKeys: (keyof OpenAPIV3.ComponentsObject)[] = [
 export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentationOptions): Promise<ILoadSwaggerDocumentationResult> {
     const dir = toFullPath(options.dir);
     const ext = toExt(options.ext);
+    const debug = toDebugActionSafe("loadSwaggerDocumentation", options.debug);
 
     const {
         baseDocumentScript,
@@ -109,7 +115,14 @@ export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentatio
         baseDocument: ControllersSwaggerBaseDocument;
     } = {} as any;
 
-    setupObjectProperty(temp, "baseDocument", loadModule(baseDocumentScript));
+    await rethrowOnError(async () => {
+        debug(`Loading base document from ${baseDocumentScript} ...`, "🐞");
+        setupObjectProperty(temp, "baseDocument", loadModule(baseDocumentScript));
+    }, () => {
+        debug(`Loaded base document from ${baseDocumentScript}`, "✅");
+    }, (error) => {
+        debug(`Could not load base document from ${baseDocumentScript}: ${error}`, "❌");
+    });
 
     const { baseDocument } = temp;
     if (!baseDocument.components) {
@@ -124,6 +137,7 @@ export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentatio
 
         const fStat = await stat(componentDir);
         if (!fStat.isDirectory()) {
+            debug(`${componentDir} is no directory`, "⚠️");
             continue;
         }
 
@@ -131,11 +145,20 @@ export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentatio
             baseDocument.components[key] = {};
         }
 
-        for (const script of await findScripts(componentDir, ext)) {
-            const componentName = path.basename(script, path.extname(script));
-            const component = loadModule(script);
+        debug(`Try to load components of type ${key} from ${componentDir} ...`, "🐞");
+        for (const script of await findScripts(componentDir, ext, debug)) {
+            await rethrowOnError(async () => {
+                debug(`Loading component of type ${key} from ${script} ...`, "🐞");
 
-            setupObjectProperty<any>(baseDocument.components[key], componentName, component);
+                const componentName = path.basename(script, path.extname(script));
+                const component = loadModule(script);
+
+                setupObjectProperty<any>(baseDocument.components[key], componentName, component);
+            }, () => {
+                debug(`Loaded component of type ${key} from ${script}`, "✅");
+            }, (error) => {
+                debug(`Could not load component of type ${key} from ${script}: ${error}`, "❌");
+            });
         }
     }
 
@@ -155,6 +178,7 @@ export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentatio
 export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationOptions): ILoadSwaggerDocumentationResult {
     const dir = toFullPath(options.dir);
     const ext = toExt(options.ext);
+    const debug = toDebugActionSafe("loadSwaggerDocumentationSync", options.debug);
 
     const {
         baseDocumentScript,
@@ -165,7 +189,14 @@ export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationO
         baseDocument: ControllersSwaggerBaseDocument;
     } = {} as any;
 
-    setupObjectProperty(temp, "baseDocument", loadModule(baseDocumentScript));
+    rethrowOnErrorSync(() => {
+        debug(`Loading base document from ${baseDocumentScript} ...`, "🐞");
+        setupObjectProperty(temp, "baseDocument", loadModule(baseDocumentScript));
+    }, () => {
+        debug(`Loaded base document from ${baseDocumentScript}`, "✅");
+    }, (error) => {
+        debug(`Could not load base document from ${baseDocumentScript}: ${error}`, "❌");
+    });
 
     const { baseDocument } = temp;
     if (!baseDocument.components) {
@@ -180,6 +211,7 @@ export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationO
 
         const fStat = fs.statSync(componentDir);
         if (!fStat.isDirectory()) {
+            debug(`${componentDir} is no directory`, "⚠️");
             continue;
         }
 
@@ -187,11 +219,20 @@ export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationO
             baseDocument.components[key] = {};
         }
 
-        for (const script of findScriptsSync(componentDir, ext)) {
-            const componentName = path.basename(script, path.extname(script));
-            const component = loadModule(script);
+        debug(`Try to load components of type ${key} from ${componentDir} ...`, "🐞");
+        for (const script of findScriptsSync(componentDir, ext, debug)) {
+            rethrowOnErrorSync(() => {
+                debug(`Loading component of type ${key} from ${script} ...`, "🐞");
 
-            setupObjectProperty<any>(baseDocument.components[key], componentName, component);
+                const componentName = path.basename(script, path.extname(script));
+                const component = loadModule(script);
+
+                setupObjectProperty<any>(baseDocument.components[key], componentName, component);
+            }, () => {
+                debug(`Loaded component of type ${key} from ${script}`, "✅");
+            }, (error) => {
+                debug(`Could not load component of type ${key} from ${script}: ${error}`, "❌");
+            });
         }
     }
 
@@ -200,7 +241,7 @@ export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationO
     };
 }
 
-async function findScripts(dir: string, ext: string): Promise<string[]> {
+async function findScripts(dir: string, ext: string, debug: DebugActionWithoutSource): Promise<string[]> {
     const files: string[] = [];
 
     for (const item of await readdir(dir)) {
@@ -213,12 +254,15 @@ async function findScripts(dir: string, ext: string): Promise<string[]> {
         if (fStat.isFile()) {
             files.push(fullPath);
         }
+        else {
+            debug(`${fullPath} is no file`, "⚠️");
+        }
     }
 
     return files;
 }
 
-function findScriptsSync(dir: string, ext: string): string[] {
+function findScriptsSync(dir: string, ext: string, debug: DebugActionWithoutSource): string[] {
     const files: string[] = [];
 
     for (const item of fs.readdirSync(dir)) {
@@ -230,6 +274,9 @@ function findScriptsSync(dir: string, ext: string): string[] {
         const fStat = fs.statSync(fullPath);
         if (fStat.isFile()) {
             files.push(fullPath);
+        }
+        else {
+            debug(`${fullPath} is no file`, "⚠️");
         }
     }
 
@@ -258,6 +305,32 @@ function loadModule(modulePath: string): any {
     }
     else {
         return mod;  // module.exports
+    }
+}
+
+async function rethrowOnError(action: () => Promise<void>, onSuccess: () => void, onError: (error: any) => void): Promise<void> {
+    try {
+        await action();
+
+        onSuccess();
+    }
+    catch (error) {
+        onError(error);
+
+        throw error;
+    }
+}
+
+function rethrowOnErrorSync(action: () => void, onSuccess: () => void, onError: (error: any) => void): void {
+    try {
+        action();
+
+        onSuccess();
+    }
+    catch (error) {
+        onError(error);
+
+        throw error;
     }
 }
 
