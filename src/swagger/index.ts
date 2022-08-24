@@ -153,7 +153,7 @@ export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentatio
                 const componentName = path.basename(script, path.extname(script));
                 const component = loadModule(script);
 
-                setupObjectProperty<any>(baseDocument.components[key], componentName, component);
+                setupObjectProperty<any>(baseDocument.components![key], componentName, component);
             }, () => {
                 debug(`Loaded component of type ${key} from ${script}`, "✅");
             }, (error) => {
@@ -227,7 +227,7 @@ export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationO
                 const componentName = path.basename(script, path.extname(script));
                 const component = loadModule(script);
 
-                setupObjectProperty<any>(baseDocument.components[key], componentName, component);
+                setupObjectProperty<any>(baseDocument.components![key], componentName, component);
             }, () => {
                 debug(`Loaded component of type ${key} from ${script}`, "✅");
             }, (error) => {
