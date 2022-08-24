@@ -52,6 +52,16 @@ export interface ILoadSwaggerDocumentationOptions {
 }
 
 /**
+ * A result of a `loadSwaggerDocumentation()` or `loadSwaggerDocumentationSync()` call.
+ */
+export interface ILoadSwaggerDocumentationResult {
+    /**
+     * The base document.
+     */
+    baseDocument: ControllersSwaggerBaseDocument;
+}
+
+/**
  * A filter function for files.
  *
  * @param {ILoadSwaggerDocumentationFileFilterContext} context The context.
@@ -84,9 +94,9 @@ const componentKeys: (keyof OpenAPIV3.ComponentsObject)[] = [
  *
  * @param {ILoadSwaggerDocumentationOptions} options The options.
  *
- * @returns {Promise<ControllersSwaggerBaseDocument>} The promise with the loaded base document.
+ * @returns {Promise<ILoadSwaggerDocumentationResult>} The promise with the result.
  */
-export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentationOptions): Promise<ControllersSwaggerBaseDocument> {
+export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentationOptions): Promise<ILoadSwaggerDocumentationResult> {
     const dir = toFullPath(options.dir);
     const ext = toExt(options.ext);
 
@@ -95,7 +105,13 @@ export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentatio
         componentsDir
     } = getDirsAndFiles(dir, ext);
 
-    const baseDocument: ControllersSwaggerBaseDocument = loadModule(baseDocumentScript);
+    const temp: {
+        baseDocument: ControllersSwaggerBaseDocument;
+    } = {} as any;
+
+    setupObjectProperty(temp, "baseDocument", loadModule(baseDocumentScript));
+
+    const { baseDocument } = temp;
     if (!baseDocument.components) {
         baseDocument.components = {};
     }
@@ -111,19 +127,21 @@ export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentatio
             continue;
         }
 
-        if (!(baseDocument.components as any)[key]) {
-            (baseDocument.components as any)[key] = {};
+        if (!baseDocument.components[key]) {
+            baseDocument.components[key] = {};
         }
 
         for (const script of await findScripts(componentDir, ext)) {
-            const componentName = path.basename(script, path.basename(script));
+            const componentName = path.basename(script, path.extname(script));
             const component = loadModule(script);
 
-            (baseDocument.components as any)[key][componentName] = component;
+            setupObjectProperty<any>(baseDocument.components[key], componentName, component);
         }
     }
 
-    return baseDocument;
+    return {
+        baseDocument
+    };
 }
 
 /**
@@ -132,9 +150,9 @@ export async function loadSwaggerDocumentation(options: ILoadSwaggerDocumentatio
  *
  * @param {ILoadSwaggerDocumentationOptions} options The options.
  *
- * @returns {ControllersSwaggerBaseDocument} The loaded base document.
+ * @returns {ILoadSwaggerDocumentationResult} The result.
  */
-export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationOptions): ControllersSwaggerBaseDocument {
+export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationOptions): ILoadSwaggerDocumentationResult {
     const dir = toFullPath(options.dir);
     const ext = toExt(options.ext);
 
@@ -143,7 +161,13 @@ export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationO
         componentsDir
     } = getDirsAndFiles(dir, ext);
 
-    const baseDocument: ControllersSwaggerBaseDocument = loadModule(baseDocumentScript);
+    const temp: {
+        baseDocument: ControllersSwaggerBaseDocument;
+    } = {} as any;
+
+    setupObjectProperty(temp, "baseDocument", loadModule(baseDocumentScript));
+
+    const { baseDocument } = temp;
     if (!baseDocument.components) {
         baseDocument.components = {};
     }
@@ -159,19 +183,21 @@ export function loadSwaggerDocumentationSync(options: ILoadSwaggerDocumentationO
             continue;
         }
 
-        if (!(baseDocument.components as any)[key]) {
-            (baseDocument.components as any)[key] = {};
+        if (!baseDocument.components[key]) {
+            baseDocument.components[key] = {};
         }
 
         for (const script of findScriptsSync(componentDir, ext)) {
-            const componentName = path.basename(script, path.basename(script));
+            const componentName = path.basename(script, path.extname(script));
             const component = loadModule(script);
 
-            (baseDocument.components as any)[key][componentName] = component;
+            setupObjectProperty<any>(baseDocument.components[key], componentName, component);
         }
     }
 
-    return baseDocument;
+    return {
+        baseDocument
+    };
 }
 
 async function findScripts(dir: string, ext: string): Promise<string[]> {
@@ -211,7 +237,7 @@ function findScriptsSync(dir: string, ext: string): string[] {
 }
 
 function getDirsAndFiles(dir: string, ext: string) {
-    const baseDocumentScript = path.join(dir, `index.${ext}`);
+    const baseDocumentScript = path.join(dir, `index${ext}`);
 
     const componentsDir = path.join(dir, "components");
 
@@ -226,11 +252,25 @@ function loadModule(modulePath: string): any {
     delete require.cache[resolvedPath];
 
     const mod = require(resolvedPath);
+
     if (mod.default) {
         return mod.default;  // default export
     }
     else {
         return mod;  // module.exports
+    }
+}
+
+function setupObjectProperty<T extends any = any>(obj: T, prop: keyof T, value: any) {
+    if (typeof value === "function") {
+        Object.defineProperty(obj, prop, {
+            "enumerable": true,
+            "configurable": true,
+            "get": value
+        });
+    }
+    else {
+        obj[prop] = value;
     }
 }
 
