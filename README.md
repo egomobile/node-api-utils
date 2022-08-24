@@ -115,7 +115,7 @@ app.controllers({
   //
   // .
   // ├── swagger
-  // │   ├── index.ts (must export the base document => https://swagger.io/specification/#openapi-object)
+  // │   ├── index.ts (must export the base document => https://egomobile.github.io/node-http-server/types/ControllersSwaggerBaseDocument.html)
   // |   |
   // │   ├── components (contains components => https://swagger.io/specification/#components-object)
   // |   |   ├── callbacks (optional)
