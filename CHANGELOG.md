@@ -1,5 +1,10 @@
 # Change Log (@egomobile/api-utils)
 
+## 1.2.0
+
+- implement `loadSwaggerDocumentation()` and `loadSwaggerDocumentationSync()` functions to load Swagger documentation from a directory with a strict file and folder structure
+- `npm update`s
+
 ## 1.1.0
 
 - implement `handleApiParseError()`, which creates standardrized error handlers for invalid JSON, e.g.
