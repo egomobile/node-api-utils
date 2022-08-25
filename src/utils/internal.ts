@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import type { DebugAction } from "../types";
+import type { DebugActionWithoutSource, Nilable } from "../types/internal";
+
 export function getEmptyArray<T extends any = any>(): T[] {
     return [];
 }
@@ -23,4 +26,18 @@ export function isNil(val: any): val is (null | undefined) {
 
 export function isIterable(val: any) {
     return typeof val?.[Symbol.iterator] === "function";
+}
+
+export function toDebugActionSafe(source: string, debug: Nilable<DebugAction>): DebugActionWithoutSource {
+    if (isNil(debug)) {
+        return () => { };
+    }
+
+    if (typeof debug !== "function") {
+        throw new TypeError("debug must be of type function");
+    }
+
+    return (message, icon) => {
+        return debug(message, icon, source);
+    };
 }

@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import { DebugIcon } from ".";
+
+export type DebugActionWithoutSource = (message: string, icon: DebugIcon) => any;
+
 export type List<T extends any = any> = T[] | Iterable<T> | IterableIterator<T>;
 
 export type Nilable<T extends any = any> = Nullable<T> | undefined;

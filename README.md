@@ -17,7 +17,7 @@ npm install --save @egomobile/api-utils
 
 ## Usage
 
-### Quick example
+### Quick examples
 
 #### Build API responses
 
@@ -93,6 +93,98 @@ app.post(
 // ...
 
 app.listen().catch(console.error);
+```
+
+#### Swagger documentation
+
+```typescript
+import createServer, {
+  ControllersSwaggerBaseDocument,
+} from "@egomobile/http-server";
+import { loadSwaggerDocumentationSync } from "@egomobile/api-utils";
+
+const app = createServer();
+
+app.controllers({
+  rootDir: __dirname + "/controllers",
+
+  // loads a Swagger base document, with all components
+  // from `swagger` subfolder
+  //
+  // the folder must have the following structure:
+  //
+  // .
+  // ├── swagger
+  // │   ├── index.ts (must export the base document => https://egomobile.github.io/node-http-server/types/ControllersSwaggerBaseDocument.html)
+  // |   |
+  // │   ├── components (contains components => https://swagger.io/specification/#components-object)
+  // |   |   ├── callbacks (optional)
+  // |   |   |   ├── FooCallback.ts (exports a callback with the name `FooCallback` => https://swagger.io/specification/#callback-object)
+  // |   |   ├── examples (optional)
+  // |   |   |   ├── FooExample.ts (exports an example with the name `FooExample` => https://swagger.io/specification/#example-object)
+  // |   |   ├── headers (optional)
+  // |   |   |   ├── FooHeader.ts (exports a header with the name `FooHeader` => https://swagger.io/specification/#header-object)
+  // |   |   ├── links (optional)
+  // |   |   |   ├── FooLink.ts (exports a link with the name `FooLink` => https://swagger.io/specification/#link-object)
+  // |   |   ├── parameters (optional)
+  // |   |   |   ├── FooParameter.ts (exports a parameter with the name `FooParameter` => https://swagger.io/specification/#parameter-object)
+  // |   |   ├── requestBodies (optional)
+  // |   |   |   ├── FooRequest.ts (exports a request body with the name `FooRequest` => https://swagger.io/specification/#request-body-object)
+  // |   |   ├── responses (optional)
+  // |   |   |   ├── FooResponse.ts (exports a response with the name `FooResponse` => https://swagger.io/specification/#response-object)
+  // |   |   ├── schemas (optional)
+  // |   |   |   ├── FooSchema.ts (exports a scheme with the name `FooSchema` => https://swagger.io/specification/#schema-object)
+  // |   |   ├── securitySchemes (optional)
+  // |   |   |   ├── FooSecuritySchema.ts (exports a security scheme with the name `FooSecuritySchema` => https://swagger.io/specification/#security-scheme-object)
+  //
+  swagger: loadSwaggerDocumentationSync({
+    dir: __dirname + "/swagger",
+    ext: ".ts", // include TypeScript files
+  }),
+});
+
+app.listen().catch(console.error);
+```
+
+Example for an exported object (`/swagger/components/responses/FooResponse.ts`):
+
+```typescript
+import type { OpenAPIV3 } from "@egomobile/http-server";
+
+const FooResponse: OpenAPIV3.ResponseObject = {
+  description: "A foo response.",
+  content: {
+    "application/json": {
+      examples: {
+        "Example #1": {
+          value: {
+            success: false,
+            data: null,
+            messages: [
+              {
+                code: 40300,
+                id: "03dcbaa4ef879ece0a0d09eeb5d00e6c",
+                internal: true,
+                message: "Forbidden access",
+                type: "error",
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
+};
+
+export default FooResponse;
+```
+
+The object can be referenced by
+
+```json
+{
+  "$ref": "#/components/responses/FooResponse"
+}
 ```
 
 ## Credits
