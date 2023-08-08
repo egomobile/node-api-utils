@@ -1,6 +1,6 @@
 {
     "name": "@egomobile/api-utils",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "REST API extensions for extensions for @egomobile/http-server module, a very fast alternative to Express.js",
     "main": "lib/index.js",
     "engines": {
@@ -70,6 +70,6 @@
         "typescript": "4.7.4"
     },
     "peerDependencies": {
-        "@egomobile/http-server": ">= 0.63.1"
+        "@egomobile/http-server": ">=0.63.1 < 0.64"
     }
 }
