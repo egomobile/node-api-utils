@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>loadSwaggerDocumentation | @egomobile/api-utils</title><meta name="description" content="Documentation for @egomobile/api-utils"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>createSwaggerStatSettings | @egomobile/api-utils</title><meta name="description" content="Documentation for @egomobile/api-utils"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base="..">
 <div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -13,28 +13,22 @@
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">@egomobile/api-utils</a></li>
-<li><a href="loadSwaggerDocumentation.html">loadSwaggerDocumentation</a></li></ul>
-<h1>Function loadSwaggerDocumentation</h1></div>
+<li><a href="createSwaggerStatSettings.html">createSwaggerStatSettings</a></li></ul>
+<h1>Function createSwaggerStatSettings</h1></div>
 <section class="tsd-panel">
 <ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="loadSwaggerDocumentation"><span class="tsd-kind-call-signature">load<wbr/>Swagger<wbr/>Documentation</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/ILoadSwaggerDocumentationResult.html" class="tsd-signature-type tsd-kind-interface">ILoadSwaggerDocumentationResult</a><span class="tsd-signature-symbol">&gt;</span><a href="#loadSwaggerDocumentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" id="icon-anchor"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></g></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="createSwaggerStatSettings"><span class="tsd-kind-call-signature">create<wbr/>Swagger<wbr/>Stat<wbr/>Settings</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ICreateSwaggerStatSettingsResult.html" class="tsd-signature-type tsd-kind-interface">ICreateSwaggerStatSettingsResult</a><a href="#createSwaggerStatSettings" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" id="icon-anchor"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></g></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Loads Swagger documentation from a directory, where components
-are organized in sub folders.</p>
+<div class="tsd-comment tsd-typography"><p>Used to setup an <code>IHttpServer</code> instance, to return statistics about its Swagger documentation.</p>
 </div>
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">options</span>: <a href="../interfaces/ILoadSwaggerDocumentationOptions.html" class="tsd-signature-type tsd-kind-interface">ILoadSwaggerDocumentationOptions</a></h5>
-<div class="tsd-comment tsd-typography"><p>The options.</p>
-</div>
-<div class="tsd-comment tsd-typography"></div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/ILoadSwaggerDocumentationResult.html" class="tsd-signature-type tsd-kind-interface">ILoadSwaggerDocumentationResult</a><span class="tsd-signature-symbol">&gt;</span></h4><p>The promise with the result.</p>
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/ICreateSwaggerStatSettingsResult.html" class="tsd-signature-type tsd-kind-interface">ICreateSwaggerStatSettingsResult</a></h4><p>Settings for the <code>IHttpServer.contoller</code> method.</p>
 
-<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<div class="tsd-comment tsd-typography">
+<h4>Example</h4><pre><code><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-5">createServer</span><span class="hl-1">, { </span><span class="hl-5">createSwaggerStatSettings</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@egomobile/http-server&#39;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">app</span><span class="hl-1"> = </span><span class="hl-0">createServer</span><span class="hl-1">()</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">handler</span><span class="hl-1">: </span><span class="hl-6">statsHandler</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">onControllerMethodInitialized</span><br/><span class="hl-1">} = </span><span class="hl-0">createSwaggerStatSettings</span><span class="hl-1">()</span><br/><br/><span class="hl-5">app</span><span class="hl-1">.</span><span class="hl-0">controllers</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">onControllerMethodInitialized</span><br/><span class="hl-1">})</span><br/><br/><span class="hl-5">app</span><span class="hl-1">.</span><span class="hl-0">get</span><span class="hl-1">(</span><span class="hl-2">&#39;/swagger-stats&#39;</span><span class="hl-1">, </span><span class="hl-5">statsHandler</span><span class="hl-1">)</span><br/><br/><span class="hl-5">app</span><span class="hl-1">.</span><span class="hl-0">listen</span><span class="hl-1">()</span><br/><span class="hl-1">  .</span><span class="hl-0">catch</span><span class="hl-1">(</span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-5">error</span><span class="hl-1">)</span>
+</code><button>Copy</button></pre>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/egomobile/node-api-utils/blob/4b73fcb/src/swagger/index.ts#L104">swagger/index.ts:104</a></li></ul></aside></li></ul></section></div>
+<li>Defined in <a href="https://github.com/egomobile/node-api-utils/blob/4b73fcb/src/swagger/stats.ts#L80">swagger/stats.ts:80</a></li></ul></aside></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -82,13 +76,13 @@ are organized in sub folders.</p>
 <li><a href="apiResponse.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-64"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)"></path></g></svg><span>api<wbr/>Response</span></a></li>
 <li><a href="createSwaggerSchemaForApiListResponse.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create<wbr/>Swagger<wbr/>Schema<wbr/>For<wbr/>Api<wbr/>List<wbr/>Response</span></a></li>
 <li><a href="createSwaggerSchemaForApiResponse.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create<wbr/>Swagger<wbr/>Schema<wbr/>For<wbr/>Api<wbr/>Response</span></a></li>
-<li><a href="createSwaggerStatSettings.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create<wbr/>Swagger<wbr/>Stat<wbr/>Settings</span></a></li>
+<li><a href="createSwaggerStatSettings.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create<wbr/>Swagger<wbr/>Stat<wbr/>Settings</span></a></li>
 <li><a href="extendRequest.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>extend<wbr/>Request</span></a></li>
 <li><a href="handleApiError.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>handle<wbr/>Api<wbr/>Error</span></a></li>
 <li><a href="handleApiNotFound.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>handle<wbr/>Api<wbr/>Not<wbr/>Found</span></a></li>
 <li><a href="handleApiParseError.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>handle<wbr/>Api<wbr/>Parse<wbr/>Error</span></a></li>
 <li><a href="handleApiValidationError.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>handle<wbr/>Api<wbr/>Validation<wbr/>Error</span></a></li>
-<li><a href="loadSwaggerDocumentation.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>load<wbr/>Swagger<wbr/>Documentation</span></a></li>
+<li><a href="loadSwaggerDocumentation.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>load<wbr/>Swagger<wbr/>Documentation</span></a></li>
 <li><a href="loadSwaggerDocumentationSync.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>load<wbr/>Swagger<wbr/>Documentation<wbr/>Sync</span></a></li>
 <li><a href="parseListQuery.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>parse<wbr/>List<wbr/>Query</span></a></li>
 <li><a href="setupControllersWithSwaggerStats.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>setup<wbr/>Controllers<wbr/>With<wbr/>Swagger<wbr/>Stats</span></a></li></ul></nav></div></div></div>
