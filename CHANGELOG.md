@@ -1,5 +1,13 @@
 # Change Log (@egomobile/api-utils)
 
+## 2.0.0
+
+- add `createSwaggerStatSettings()` and `setupControllersWithSwaggerStats()` functions
+- `npm update`s
+- module requires at least:
+  - [Node 16+](https://nodejs.org/gl/blog/release/v16.0.0/)
+  - [node-http-server 0.63.1+](https://github.com/egomobile/node-http-server)
+
 ## 1.2.0
 
 - implement `loadSwaggerDocumentation()` and `loadSwaggerDocumentationSync()` functions to load Swagger documentation from a directory with a strict file and folder structure

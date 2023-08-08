@@ -371,3 +371,5 @@ function toFullPath(value: string): string {
         return path.join(process.cwd(), value);
     }
 }
+
+export * from "./stats";
