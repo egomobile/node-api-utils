@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import type { ControllerMethodInitializedEventHandler, HttpOptionsOrMiddlewares, HttpRequestHandler, HttpRequestPath, IControllerMethodInfo, IControllersOptions, IHttpServer } from "@egomobile/http-server";
+import type { ControllerMethodInitializedEventHandler, HttpOptionsOrMiddlewares, HttpRequestHandler, HttpRequestPath, IControllerMethodInfo, IControllersOptions, IControllersResult, IHttpServer } from "@egomobile/http-server";
 import { apiResponse } from "../responses";
 import type { Nilable } from "../types/internal";
 
@@ -128,8 +128,10 @@ export function createSwaggerStatSettings(): ICreateSwaggerStatSettingsResult {
  *
  * @param {IHttpServer} server The server instance.
  * @param {Nilable<ISetupControllersWithSwaggerStatsOptions>} [options] Custom options.
+ *
+ * @returns {IControllersResult} The result of the underlying `server.controllers` call.
  */
-export function setupControllersWithSwaggerStats(server: IHttpServer, options?: Nilable<ISetupControllersWithSwaggerStatsOptions>) {
+export function setupControllersWithSwaggerStats(server: IHttpServer, options?: Nilable<ISetupControllersWithSwaggerStatsOptions>): IControllersResult {
     const originalOnControllerMethodInitialized = options?.controllerOptions?.onControllerMethodInitialized;
 
     const {
@@ -137,7 +139,7 @@ export function setupControllersWithSwaggerStats(server: IHttpServer, options?: 
         onControllerMethodInitialized
     } = createSwaggerStatSettings();
 
-    server.controllers({
+    const result = server.controllers({
         ...(options?.controllerOptions ?? {}),
 
         "onControllerMethodInitialized": (context) => {
@@ -152,4 +154,6 @@ export function setupControllersWithSwaggerStats(server: IHttpServer, options?: 
         options?.optionsOrMiddlewares || {},
         handler
     );
+
+    return result;
 }

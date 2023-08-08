@@ -1,6 +1,6 @@
 # Change Log (@egomobile/api-utils)
 
-## 2.0.0
+## 2.0.2
 
 - add `createSwaggerStatSettings()` and `setupControllersWithSwaggerStats()` functions
 - `npm update`s
