@@ -111,9 +111,6 @@ const listQueryParamsSchema = joi.object({
  * main().catch(console.error)
  * ```
  *
- * @param {IParseListQueryOptions} options Custom options.
- * @param {ValidFieldNameItemValue[]} validFieldNames The list of valid field names.
- *
  * @returns {HttpMiddleware} The new middleware.
  */
 export function parseListQuery(): HttpMiddleware;

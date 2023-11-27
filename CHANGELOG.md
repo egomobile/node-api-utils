@@ -1,5 +1,12 @@
 # Change Log (@egomobile/api-utils)
 
+## 3.0.0
+
+- module requires at least:
+  - [Node 18+](https://nodejs.org/gl/blog/release/v18.0.0/)
+  - [node-http-server 0.64.0+](https://github.com/egomobile/node-http-server)
+- `npm update`s
+
 ## 2.0.2
 
 - add `createSwaggerStatSettings()` and `setupControllersWithSwaggerStats()` functions
