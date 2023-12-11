@@ -1,5 +1,11 @@
 # Change Log (@egomobile/api-utils)
 
+## 4.0.0
+
+- module requires at least:
+  - [node-http-server 0.65.0+](https://github.com/egomobile/node-http-server)
+- `npm update`s
+
 ## 3.0.0
 
 - module requires at least:
