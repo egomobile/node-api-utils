@@ -133,7 +133,7 @@ export interface ICreateApiHandlerFactoryOptions<
  *   userId: string;
  * }
  *
- * async getApiClient(): Promise<AxiosInstance> {
+ * async function getApiClient(): Promise<AxiosInstance> {
  *   // return an `AxiosInstance` instance here
  *   // which is already authenticated
  *   // and ready-to-use
