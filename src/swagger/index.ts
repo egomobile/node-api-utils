@@ -14,8 +14,8 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import type { ControllersSwaggerBaseDocument, OpenAPIV3 } from "@egomobile/http-server";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import type { DebugAction } from "../types";
 import type { DebugActionWithoutSource, Nilable } from "../types/internal";
 import { isNil, toDebugActionSafe } from "../utils/internal";

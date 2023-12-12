@@ -1,5 +1,9 @@
 # Change Log (@egomobile/api-utils)
 
+## 4.1.0
+
+- implement `createApiHandlerFactory()` factory function, which create strong typed API handlers
+
 ## 4.0.0
 
 - module requires at least:

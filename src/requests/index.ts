@@ -14,7 +14,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import type { HttpMiddleware } from "@egomobile/http-server";
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 /**
  * Creates a middleware, which extends an IHttpRequest with
