@@ -41,16 +41,12 @@ export type ApiHandlerFuncWithOptions<THandler extends IApiHandler, TOptions> =
 /**
  * A repository of API handler methods.
  */
-export type ApiHandlerMethods<THandler extends IApiHandler> = {
+export type ApiHandlerMethods<THandler extends IApiHandler> = ({
     /**
      * The list of methods.
      */
     [methodName: string]: ApiHandlerFunc<THandler> | ApiHandlerFuncWithOptions<THandler, unknown>;
-} & {
-    // disallow the following ...
-    apiResponse?: never;
-    getApiClient?: never;
-};
+} & { [K in keyof IApiHandler]?: never; });
 
 /**
  * Extended API handler with applied things like API methods.
@@ -247,4 +243,3 @@ export function createApiHandlerFactory<
         return newHandler;
     };
 }
-
