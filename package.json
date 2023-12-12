@@ -1,6 +1,6 @@
 {
     "name": "@egomobile/api-utils",
-    "version": "4.0.0",
+    "version": "4.1.0",
     "description": "REST API extensions for extensions for @egomobile/http-server module, a very fast alternative to Express.js",
     "main": "lib/index.js",
     "engines": {
@@ -57,6 +57,7 @@
         "@types/jest": "29.5.11",
         "@types/node": "18.18.13",
         "@types/supertest": "2.0.16",
+        "axios": "1.6.2",
         "babel-jest": "29.7.0",
         "del-cli": "5.1.0",
         "eslint": "8.55.0",

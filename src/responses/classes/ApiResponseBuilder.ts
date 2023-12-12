@@ -17,7 +17,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import type { IHttpRequest, IHttpResponse } from "@egomobile/http-server";
-import type { OutgoingHttpHeaders } from "http";
+import type { OutgoingHttpHeaders } from "node:http";
 import type { List, Nilable, Nullable } from "../../types/internal";
 import { isIterable, isNil } from "../../utils/internal";
 
