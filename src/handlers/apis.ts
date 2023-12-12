@@ -45,7 +45,7 @@ export type ApiHandlerMethods<THandler extends IApiHandler> = ({
     /**
      * The list of methods.
      */
-    [methodName: string]: ApiHandlerFunc<THandler> | ApiHandlerFuncWithOptions<THandler, unknown>;
+    [methodName: string]: ApiHandlerFunc<THandler> | ApiHandlerFuncWithOptions<THandler, any>;
 } & { [K in keyof IApiHandler]?: never; });
 
 /**
