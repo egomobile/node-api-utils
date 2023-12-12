@@ -197,6 +197,8 @@ export interface ICreateApiHandlerFactoryOptions<
  *     userId: request.params!.user_id
  *   })
  * })
+ *
+ * await app.listen()
  * ```
  *
  * @param {ICreateApiHandlerFactoryOptions<THandler,TApiMethods>} options The options.
