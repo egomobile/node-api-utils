@@ -16,7 +16,7 @@
 import createServer from "@egomobile/http-server";
 import request from "supertest";
 import { handleApiNotFound } from "../../responses/handlers";
-import { binaryParser } from "../utils";
+import { binaryParser } from "../_utils";
 
 describe("handleApiNotFound()", () => {
     it.each(["foo", "bar", "baz"])("should save valid value to internal prop", async (subPath) => {

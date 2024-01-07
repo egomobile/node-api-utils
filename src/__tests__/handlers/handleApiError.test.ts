@@ -16,7 +16,7 @@
 import createServer from "@egomobile/http-server";
 import request from "supertest";
 import { handleApiError } from "../../responses/handlers";
-import { binaryParser } from "../utils";
+import { binaryParser } from "../_utils";
 
 describe("handleApiError()", () => {
     it.each(["foo", "bar", "baz"])("should save valid value to internal prop", async (txt) => {

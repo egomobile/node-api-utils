@@ -16,7 +16,7 @@
 import createServer, { json } from "@egomobile/http-server";
 import request from "supertest";
 import { handleApiParseError } from "../../responses/handlers";
-import { binaryParser } from "../utils";
+import { binaryParser } from "../_utils";
 
 describe("handleApiParseError()", () => {
     it("should return 400 if submit invalid JSON data", async () => {

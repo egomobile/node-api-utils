@@ -1,4 +1,4 @@
-import { Response } from "supertest";
+import type { Response } from "supertest";
 
 export function binaryParser(response: Response, done: (ex: any, data?: Buffer) => any) {
     response.setEncoding("binary");

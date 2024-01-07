@@ -16,7 +16,7 @@
 import createServer, { query } from "@egomobile/http-server";
 import request from "supertest";
 import { parseListQuery } from "../..";
-import { binaryParser } from "../utils";
+import { binaryParser } from "../_utils";
 
 const validParams = [
     {},

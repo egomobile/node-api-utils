@@ -16,7 +16,7 @@
 import type { HttpMiddleware } from "@egomobile/http-server";
 import joi from "joi";
 import { apiResponse } from "..";
-import { Nilable } from "../types/internal";
+import type { Nilable } from "../types/internal";
 import { getEmptyArray } from "../utils/internal";
 
 /**

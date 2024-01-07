@@ -68,3 +68,5 @@ export interface IApiResponseBuilderFactoryOptions {
      */
     response: ServerResponse;
 }
+
+export * from "./errors";

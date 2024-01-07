@@ -16,7 +16,7 @@
 import createServer from "@egomobile/http-server";
 import request from "supertest";
 import { extendRequest } from "../..";
-import { binaryParser } from "../utils";
+import { binaryParser } from "../_utils";
 
 describe("extendRequest()", () => {
     it("should fill request props with valid data", async () => {

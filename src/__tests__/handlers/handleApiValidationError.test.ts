@@ -16,7 +16,7 @@
 import createServer, { json, schema, validate } from "@egomobile/http-server";
 import request from "supertest";
 import { handleApiValidationError } from "../../responses/handlers";
-import { binaryParser } from "../utils";
+import { binaryParser } from "../_utils";
 
 const testSchema = schema.object({
     "email": schema.string().strict().email().required(),

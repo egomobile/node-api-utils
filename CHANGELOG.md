@@ -1,6 +1,12 @@
 # Change Log (@egomobile/api-utils)
 
-## 4.1.0
+## 5.0.0
+
+- implement `throwOnUnexpectedApiResponse()` function
+- code cleanups and improvements
+- `npm update`s
+
+## 4.1.1
 
 - implement `createApiHandlerFactory()` factory function, which create strong typed API handlers
 
