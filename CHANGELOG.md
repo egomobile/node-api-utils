@@ -1,6 +1,6 @@
 # Change Log (@egomobile/api-utils)
 
-## 5.0.0
+## 5.0.1
 
 - implement `throwOnUnexpectedApiResponse()` function
 - code cleanups and improvements

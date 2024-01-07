@@ -77,6 +77,7 @@ export interface IApiResponseValidatorContext {
  * // following template placeholders are supported:
  * // - {{body}} => response body as text with a maximum length of 131072 chars
  * // - {{headers}} => list of HTTP response headers as one single text
+ * // - {{messages}} => list of extracted API messages items as one single text
  * // - {{statusCode}} => HTTP status code, like 200, 404, 500 etc.
  * // - {{statusText}} => text representation of HTTP status code, like `OK`, `Not Found`, `Internal Server Error` etc.
  * //
@@ -189,6 +190,14 @@ export async function throwOnUnexpectedApiResponse(
         strData = strData.substring(0, maxStringDataLength - 1) + "…";
     }
 
+    const strMessages = messages.map((msg) => {
+        const codePrefix = typeof msg?.code === "number" ? `${msg.code} :: ` : "";
+        const messageText = String(msg?.message || "").trim();
+        const typePrefix = msg?.type ? `[${msg?.type}] ` : "";
+
+        return `- ${codePrefix}${typePrefix}${messageText}`;
+    }).join("\n");
+
     let errorMessage: string;
 
     const firstMatchingStatusErrorMessage = Object.entries(statusErrors).filter(([statusCodeRegex]) => {
@@ -206,17 +215,12 @@ export async function throwOnUnexpectedApiResponse(
         errorMessage = errorMessage.split("{{statusText}}").join(response.statusText);
         errorMessage = errorMessage.split("{{headers}}").join(strHeaders);
         errorMessage = errorMessage.split("{{body}}").join(strData);
+        errorMessage = errorMessage.split("{{messages}}").join(strMessages);
     }
     else {
         let suffix: string;
-        if (messages.length > 0) {
-            suffix = messages.map((msg) => {
-                const codePrefix = typeof msg?.code === "number" ? `${msg.code} :: ` : "";
-                const messageText = String(msg?.message || "").trim();
-                const typePrefix = msg?.type ? `[${msg?.type}] ` : "";
-
-                return `- ${codePrefix}${typePrefix}${messageText}`;
-            }).join("\n");
+        if (strMessages !== "") {
+            suffix = strMessages;
         }
         else {
             suffix = `${strHeaders}\n\n${strData}`;
