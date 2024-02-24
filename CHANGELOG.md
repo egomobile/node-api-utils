@@ -1,5 +1,10 @@
 # Change Log (@egomobile/api-utils)
 
+## 6.0.0
+
+- setup required version of [node-http-server](https://github.com/egomobile/node-http-server) to `0.66.x`
+- `npm update`s
+
 ## 5.0.1
 
 - implement `throwOnUnexpectedApiResponse()` function
