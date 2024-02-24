@@ -1,5 +1,9 @@
 # Change Log (@egomobile/api-utils)
 
+## 7.0.0
+
+- setup required version of [node-http-server](https://github.com/egomobile/node-http-server) to `0.66.x`
+
 ## 6.0.0
 
 - setup required version of [node-http-server](https://github.com/egomobile/node-http-server) to `0.66.x`
